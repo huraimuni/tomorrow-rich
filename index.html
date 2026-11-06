@@ -1,5 +1,5 @@
 <title>내일의 부자들</title>
-<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700&display=swap">
@@ -99,7 +99,7 @@ h2{font-size:19px;margin-bottom:8px;color:var(--gold)}
 .nav .dot{position:absolute;top:-4px;right:6px;width:12px;height:12px;background:var(--bad);border:2px solid var(--line);border-radius:3px}
 .overlay{position:fixed;inset:0;background:rgba(3,5,20,.82);z-index:60;display:flex;align-items:flex-start;justify-content:center;overflow:auto;
   padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
-.overlay[hidden]{display:none}
+.overlay[hidden],#login [hidden]{display:none!important}
 .sheet{width:100%;max-width:440px;margin:auto}
 .ev-head{font-family:var(--f-display);font-size:24px;color:var(--gold);text-align:center;background:var(--soft);border:3px solid var(--gold-d);border-radius:8px;padding:2px 8px;margin-bottom:10px}
 .ev-art{display:flex;justify-content:center;margin-bottom:8px}
@@ -495,6 +495,7 @@ input[type=text]{border:2px solid rgba(255,255,255,.2);border-radius:14px;backgr
   <div class="prov"><button class="btn" type="button" id="pvGoogle" disabled>Google로 시작 (준비 중)</button><button class="btn" type="button" id="pvKakao" disabled>카카오로 시작 (준비 중)</button></div>
   <div class="label">친구들과 순위를 겨루고, 응원 선물도 주고받아 보세요! Google·카카오로 로그인하면 랭킹과 닉네임 보호가 켜져요. 게스트도 모든 게임을 즐길 수 있어요.</div>
   <button class="btn gold" type="button" id="loginGo" style="width:100%;margin-top:8px">시작하기</button>
+  <button class="btn mini" type="button" id="loginOut" hidden style="width:100%;margin-top:8px;opacity:.8">로그아웃 (다른 계정으로 바꾸기)</button>
   <button class="btn mini" type="button" id="loginHelp" style="width:100%;margin-top:8px">게임 방법 보기</button>
 </div></div>
 <div class="overlay" id="rankScr" hidden><div class="sheet card"><h2>🏆 주간 랭킹</h2><div id="rankBody"></div><button class="btn gold" type="button" id="rankClose" style="width:100%;margin-top:8px">닫기</button></div></div>
@@ -4253,7 +4254,7 @@ window.__i18nMissing=function(){return Object.keys(EN_MISS).sort(function(a,b){r
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',i18nStart);else setTimeout(i18nStart,0);
 
 /* ===== shell: splash, login screen, help / manual ===== */
-var GAME_NAME='내일의 부자들',APP_VER='v36';
+var GAME_NAME='내일의 부자들',APP_VER='v37';
 function drawSplash(){
   var c=$('#splCv');if(!c||!c.getContext)return;var vc=c,c=document.createElement('canvas');c.width=96;c.height=112;var g=c.getContext('2d');g.imageSmoothingEnabled=false;
   var sky=['#0a0f33','#0f1748','#162058','#1d2a6a','#27367a','#324488','#3d5296'];
@@ -4438,6 +4439,8 @@ function loginRefresh(){
   var on=!!(NET&&NET.ok),st=$('#loginStat');if(!st)return;
   st.className='loginrow '+(on?'on':'off');
   var au=sbAuthGet();
+  var pv=document.querySelector('#login .prov'),lb=document.querySelector('#login .label'),lo=$('#loginOut');
+  if(pv)pv.hidden=!!au;if(lb)lb.hidden=!!au;if(lo)lo.hidden=!au;
   st.textContent=on?'● 로그인됨 · 랭킹·친구 초대 사용 가능':(au?'● '+({google:'Google',kakao:'카카오'}[au.prov]||'소셜')+' 계정 확인됨'+(au.name?' · '+au.name:''):'○ 로그인 안 됨 · 게스트로 시작 (이 기기에만 저장)');
 }
 var HP=[
@@ -4479,6 +4482,7 @@ function wireShell(){
   sbInitButtons();sbCatchReturn();
   $('#splash').addEventListener('click',splashStart);
   $('#loginGo').addEventListener('click',function(){$('#login').hidden=true;});
+  $('#loginOut').addEventListener('click',function(){try{localStorage.removeItem('bujaAuth');}catch(e){}loginRefresh();toast('로그아웃했어요');});
   $('#loginHelp').addEventListener('click',function(){openHelp(0);});
   $('#helpClose').addEventListener('click',function(){$('#help').hidden=true;});
   $('#helpPrev').addEventListener('click',function(){if(hpi>0){hpi--;renderHelp();}});
