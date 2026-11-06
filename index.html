@@ -900,27 +900,30 @@ function drawChibi64(g,o){
   if(o.role==='striker'){
     P([[38,66],[34,82],[66,82],[62,66]],chRamp('#d62b2b'));P([[43,65],[50,71],[57,65],[57,68],[50,74],[43,68]],W);F(48,72,4,8,'#ffd84a');
     P([[34,68],[26,80],[32,82],[38,72]],chRamp('#d62b2b'));P([[66,68],[74,80],[68,82],[62,72]],chRamp('#d62b2b'));F(27,76,4,2,W[3]);F(69,76,4,2,W[3]);
-  }else chItemBody(T,{body:o.body,acc:acc,outfit:o.outfit},top);
+  }else{if(!f){var tc=chRamp(top);E(36,73,5,6,tc);E(64,73,5,6,tc);if(o.big){E(34,74,6,7,tc);E(66,74,6,7,tc);}}chItemBody(T,{body:o.body,acc:acc,outfit:o.outfit},top);}
   /* hands, neck */
-  E(30,83,4,4,Rk);E(70,83,4,4,Rk);E(50,63,5,4,Rk,{lx:-.3,ly:-.2,bias:-.3});
+  E(f?30:28,83,f?4:4.6,f?4:4.6,Rk);E(f?70:72,83,f?4:4.6,f?4:4.6,Rk);E(50,63,5,4,Rk,{lx:-.3,ly:-.2,bias:-.3});
   if(o.ball){E(80,94,7,7,chRamp('#f4f6ff'));P([[77,91],[83,91],[82,96],[78,96]],chRamp('#1b1b2f'),{flat:1});}
   /* head */
-  E(50,45,21,18,Rk,{lx:-.5,ly:-.6});E(31,48,3,4,Rk);E(69,48,3,4,Rk);
+  E(50,45,21,18,Rk,{lx:-.5,ly:-.6});E(31,48,3,4,Rk);E(69,48,3,4,Rk);if(!f)P([[30,50],[34,62],[66,62],[70,50]],Rk,{dir:[-.2,-.9]});
   if(has('earring')){E(31,53,1.6,1.6,chRamp('#f0b93a'),{flat:1});}
-  var ck=chRamp('#f5a3a8');E(36,55,4,2.2,ck,{flat:1});E(64,55,4,2.2,ck,{flat:1});
+  var ck=chRamp('#f5a3a8');if(f||o.kid){E(36,55,4,2.2,ck,{flat:1});E(64,55,4,2.2,ck,{flat:1});}else{var ck2=chRamp('#e8a58a');E(37,56,3,1.4,ck2,{flat:1});E(63,56,3,1.4,ck2,{flat:1});}
   var lidc='#1d1840',browc=Hr[1],eyeW=has('mask')?0:1;
   function eye(cx,cy,dir){
-    E(cx,cy,4.2,5.4,['#cdb8c8','#e6d6e0','#fff7fb','#fff','#fff'],{lx:0,ly:-1});
-    E(cx,cy+.6,3.3,4.6,iris,{lx:0,ly:-1.1});E(cx,cy+2.4,2.4,2.1,[iris[3],iris[3],iris[4],iris[4],iris[4]],{flat:1});
-    E(cx,cy+.3,1.5,2.3,['#0b1a2c','#0b1a2c','#0b1a2c','#0b1a2c','#0b1a2c'],{flat:1});
+    var es=f||o.kid?1:(o.old?.72:.82);E(cx,cy+(es<1?1.2:0),4.2,5.4*es+(es<1?0:0),['#cdb8c8','#e6d6e0','#fff7fb','#fff','#fff'],{lx:0,ly:-1});
+    E(cx,cy+.6+(es<1?1.2:0),3.3,4.6*es,iris,{lx:0,ly:-1.1});E(cx,cy+2.4+(es<1?.6:0),2.4,2.1*es,[iris[3],iris[3],iris[4],iris[4],iris[4]],{flat:1});
+    E(cx,cy+.3+(es<1?1.2:0),1.5,2.3*es,['#0b1a2c','#0b1a2c','#0b1a2c','#0b1a2c','#0b1a2c'],{flat:1});
     E(cx-1.2,cy-1.8,1.3,1.5,['#fff','#fff','#fff','#fff','#fff'],{flat:1});px(cx+1.6,cy+2,'#fff');px(cx+.5,cy+3,'#e8fbff');
-    L(cx-4,cy-5.5,cx+4,cy-5.5,2,lidc);L(cx-5,cy-4,cx-4,cy-5.5,1,lidc);L(cx+4,cy-5.5,cx+5+dir,cy-4,1,lidc);
+    L(cx-4,cy-5.5*es-(es<1?-1.2:0),cx+4,cy-5.5*es-(es<1?-1.2:0),2,lidc);L(cx-5,cy-4,cx-4,cy-5.5,1,lidc);L(cx+4,cy-5.5,cx+5+dir,cy-4,1,lidc);
     if(f)L(cx+4+dir,cy-5.5,cx+6+dir*2,cy-6.5,1,lidc);
   }
   if(!has('mask')){eye(41,50,-1);eye(59,50,1);}
-  if(o.fierce){L(35,43,46,41,2,browc);L(54,41,65,43,2,browc);}else if(!has('mask')){L(37,41,45,40,1,browc);L(55,40,63,41,1,browc);}
+  if(o.fierce){L(35,43,46,41,2,browc);L(54,41,65,43,2,browc);}else if(!has('mask')){if(f){L(37,41,45,40,1,browc);L(55,40,63,41,1,browc);}else{L(36,42,46,41,2,browc);L(54,41,64,42,2,browc);}}
   px(50,56,Rk[1]);
-  if(o.fierce){L(46,60,54,60,1,'#9b3b44');px(54,59,'#9b3b44');}else{L(48,59,52,59,1,'#c25a6a');px(47,58,'#c25a6a');px(53,58,'#c25a6a');px(49,60,'#f08a96');px(50,60,'#f08a96');}
+  if(o.fierce){L(46,60,54,60,1,'#9b3b44');px(54,59,'#9b3b44');}else if(!f){L(47,60,53,60,1,'#9b4a50');px(53,59,'#9b4a50');}else{L(48,59,52,59,1,'#c25a6a');px(47,58,'#c25a6a');px(53,58,'#c25a6a');px(49,60,'#f08a96');px(50,60,'#f08a96');}
+  if(o.beard){var Bd=chRamp(o.beard);P([[31,52],[33,64],[40,71],[50,74],[60,71],[67,64],[69,52],[64,60],[56,64],[44,64],[36,60]],Bd,{dir:[0,-1]});P([[41,58],[50,56],[59,58],[55,61],[45,61]],Bd,{flat:1});L(47,60,53,60,1,'#9b4a50');}
+  if(o.old){L(34,48,37,49,1,Rk[1]);L(66,48,63,49,1,Rk[1]);L(35,51,38,52,1,Rk[1]);L(65,51,62,52,1,Rk[1]);L(41,45,45,44,1,Rk[1]);L(55,44,59,45,1,Rk[1]);}
+  if(o.stache&&!o.beard){var Bm=chRamp(o.stache);P([[41,57],[50,55],[59,57],[56,61],[44,61]],Bm,{flat:1});}
   if(has('mask')){
     E(50,47,19,18,W);E(41,49,3.6,2.6,['#111','#111','#111','#111','#111'],{flat:1});E(59,49,3.6,2.6,['#111','#111','#111','#111','#111'],{flat:1});
     L(42,60,58,60,1,'#444');L(41,58,42,60,1,'#444');L(58,60,59,58,1,'#444');
@@ -992,20 +995,20 @@ var NPC={
   son:{name:'슛돌이',role:'축구스타',sprite:{gender:'m',skin:'#e8b98a',style:0,hairColor:'#2b1d12',outfit:'#d62b2b',role:'striker',fierce:true,ball:true}},
   gaz:{name:'랩쟁이',role:'유명가수',sprite:{gender:'m',skin:'#f1c9a0',style:1,hairColor:'#f5d34a',outfit:'#16161f',acc:['shades','chain','earring','blazer']}},
   mix:{name:'우주로',role:'로켓 회사 대표',sprite:{gender:'m',skin:'#f1c9a0',style:0,hairColor:'#1b1b2f',outfit:'#101014',acc:['tophat','mask','tie','blazer']}},
-  bank:{name:'금고할배',role:'마칸다 은행 총재',sprite:{gender:'m',skin:'#f1c9a0',style:0,hairColor:'#c9ced9',outfit:'#2b3a6b',acc:['round','tie']}},
+  bank:{name:'금고할배',role:'마칸다 은행 총재',sprite:{gender:'m',skin:'#f1c9a0',style:0,hairColor:'#c9ced9',outfit:'#2b3a6b',old:1,stache:'#c9ced9',acc:['round','tie']}},
   eagle:{name:'파수독수리',role:'경비대장',sprite:{kind:'eagle'}},
-  dollar:{name:'달러곰 의장',role:'달러랜드 중앙은행 의장',sprite:{gender:'m',skin:'#d9a066',style:0,hairColor:'#6b4423',outfit:'#3b2f6e',acc:['round','tie','blazer']}},
-  oily:{name:'기름왕자 오일리',role:'태양 왕국 석유 왕자',sprite:{gender:'m',skin:'#d9a066',style:2,hairColor:'#14141c',outfit:'#f4f4f8',acc:['shades','crown','chain']}},
-  dragon:{name:'용칩 회장',role:'용왕국 반도체 대표',sprite:{gender:'m',skin:'#f1c9a0',style:0,hairColor:'#2b2b3a',outfit:'#8a1f2b',acc:['round','tie','blazer']}},
-  buffet:{name:'복리할배',role:'투자의 할아버지',sprite:{gender:'m',skin:'#ffe0c4',style:0,hairColor:'#d8dce6',outfit:'#4a5a7a',acc:['round','blazer','tie']}},
+  dollar:{name:'달러곰 의장',role:'달러랜드 중앙은행 의장',sprite:{gender:'m',skin:'#d9a066',style:0,hairColor:'#6b4423',outfit:'#3b2f6e',big:1,beard:'#6b4423',acc:['round','tie','blazer']}},
+  oily:{name:'기름왕자 오일리',role:'태양 왕국 석유 왕자',sprite:{gender:'m',skin:'#d9a066',style:2,hairColor:'#14141c',outfit:'#f4f4f8',stache:'#14141c',acc:['shades','crown','chain']}},
+  dragon:{name:'용칩 회장',role:'용왕국 반도체 대표',sprite:{gender:'m',skin:'#f1c9a0',style:0,hairColor:'#2b2b3a',outfit:'#8a1f2b',stache:'#2b2b3a',acc:['round','tie','blazer']}},
+  buffet:{name:'복리할배',role:'투자의 할아버지',sprite:{gender:'m',skin:'#ffe0c4',style:0,hairColor:'#d8dce6',outfit:'#4a5a7a',old:1,beard:'#e6e9f0',acc:['round','blazer','tie']}},
   naka:{name:'복면코더',role:'정체불명 코인 개발자',sprite:{gender:'m',skin:'#f1c9a0',style:3,hairColor:'#1b1b2f',outfit:'#2f8a4a',acc:['mask']}},
-  lotto:{name:'행운 할매',role:'복권방 사장',sprite:{gender:'f',skin:'#ffe0c4',style:1,hairColor:'#c9ced9',outfit:'#f783ac',acc:['round']}},
+  lotto:{name:'행운 할매',role:'복권방 사장',sprite:{gender:'f',skin:'#ffe0c4',style:1,hairColor:'#c9ced9',outfit:'#f783ac',old:1,acc:['round']}},
   shady:{name:'수상한 사장님',role:'투자방 운영자',sprite:{gender:'m',skin:'#f1c9a0',style:0,hairColor:'#14141c',outfit:'#14141c',acc:['shades','chain','earring']}},
-  boss:{name:'김 부장',role:'회사 부장님',sprite:{gender:'m',skin:'#f1c9a0',style:0,hairColor:'#2b2b3a',outfit:'#4a4a5a',acc:['tie','blazer','round']}},
+  boss:{name:'김 부장',role:'회사 부장님',sprite:{gender:'m',skin:'#f1c9a0',style:0,hairColor:'#2b2b3a',outfit:'#4a4a5a',big:1,stache:'#2b2b3a',acc:['tie','blazer','round']}},
   tuber:{name:'꼬마 PD',role:'영상 편집자',sprite:{gender:'f',skin:'#ffe0c4',style:2,hairColor:'#f783ac',outfit:'#2f6fe0',acc:['cap']}},
   agent:{name:'믿음직 대리인',role:'재산 관리 대리인',sprite:{gender:'f',skin:'#ffe0c4',style:1,hairColor:'#3a2a1a',outfit:'#2b3a6b',acc:['round','blazer','tie']}},
-  gov:{name:'곳간지기 장관',role:'마칸다 재정부 장관',sprite:{gender:'m',skin:'#f1c9a0',style:0,hairColor:'#4a4a55',outfit:'#3a4a6a',acc:['round','tie','blazer']}},
-  friend:{name:'동네 친구 만수',role:'치킨집 예비 사장',sprite:{gender:'m',skin:'#e8b98a',style:2,hairColor:'#6b4423',outfit:'#ffd43b',acc:['cap']}}
+  gov:{name:'곳간지기 장관',role:'마칸다 재정부 장관',sprite:{gender:'m',skin:'#f1c9a0',style:0,hairColor:'#4a4a55',outfit:'#3a4a6a',old:1,acc:['round','tie','blazer']}},
+  friend:{name:'동네 친구 만수',role:'치킨집 예비 사장',sprite:{gender:'m',skin:'#e8b98a',style:2,hairColor:'#6b4423',outfit:'#ffd43b',kid:1,acc:['cap']}}
 };
 NPC.sony=NPC.son;
 
