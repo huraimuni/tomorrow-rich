@@ -478,7 +478,7 @@ input[type=text]{border:2px solid rgba(255,255,255,.2);border-radius:14px;backgr
 <div class="overlay" id="login" hidden><div class="sheet card">
   <h2>계정</h2>
   <div class="loginrow off" id="loginStat"></div>
-  <div class="prov"><button class="btn" type="button" id="pvGoogle" disabled>Google로 시작 (준비 중)</button><button class="btn" type="button" id="pvKakao" disabled>카카오로 시작 (준비 중)</button><button class="btn" type="button" id="pvNaver" disabled>네이버로 시작 (준비 중)</button></div>
+  <div class="prov"><button class="btn" type="button" id="pvGoogle" disabled>Google로 시작 (준비 중)</button><button class="btn" type="button" id="pvKakao" disabled>카카오로 시작 (준비 중)</button></div>
   <div class="label">친구들과 순위를 겨루고, 응원 선물도 주고받아 보세요! 로그인하면 주간 랭킹과 친구 초대가 열려요. 지금은 claude 계정으로 열었을 때만 켜져요. 게스트도 모든 게임을 즐길 수 있어요.</div>
   <button class="btn gold" type="button" id="loginGo" style="width:100%;margin-top:8px">시작하기</button>
   <button class="btn mini" type="button" id="loginHelp" style="width:100%;margin-top:8px">게임 방법 보기</button>
@@ -4049,7 +4049,7 @@ else{buildNav();buildCreate();$('#create').hidden=false;if(TAMPERED)setTimeout(f
 netInit();
 
 /* ===== shell: splash, login screen, help / manual ===== */
-var GAME_NAME='내일의 부자들',APP_VER='v32';
+var GAME_NAME='내일의 부자들',APP_VER='v33';
 function drawSplash(){
   var c=$('#splCv');if(!c||!c.getContext)return;var vc=c,c=document.createElement('canvas');c.width=96;c.height=112;var g=c.getContext('2d');g.imageSmoothingEnabled=false;
   var sky=['#0a0f33','#0f1748','#162058','#1d2a6a','#27367a','#324488','#3d5296'];
@@ -4076,7 +4076,7 @@ function splashStart(){
 
 /* ---- social login via Supabase Auth (buttons light up only when the provider is enabled on the server) ---- */
 var SB_URL='https://kqdhgicluwhgkwadcxpw.supabase.co',SB_KEY='sb_publishable_ScxX2wp0R-Z1IQkK4Y_nTQ_d9z9lSWn';
-var SB_PROV={pvGoogle:['google','Google'],pvKakao:['kakao','카카오'],pvNaver:['naver','네이버']};
+var SB_PROV={pvGoogle:['google','Google'],pvKakao:['kakao','카카오']};
 function sbAuthGet(){try{return JSON.parse(localStorage.getItem('bujaAuth')||'null')}catch(e){return null}}
 function sbCatchReturn(){
   try{
