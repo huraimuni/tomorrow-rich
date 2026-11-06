@@ -328,6 +328,58 @@ html.hc .label,html.hc .sub{color:#e8ecff}
 .hdots i{width:8px;height:8px;border-radius:2px;background:var(--line,#2a3470);display:block}
 .hdots i.on{background:var(--gold)}
 .prov{display:flex;gap:8px;margin-top:8px}.prov .btn{flex:1}
+
+/* ===== v30 skin: lighter, softer, rounder ===== */
+:root{
+  --bg:#1a1f5c; --panel:#2b3480; --panel2:#3a46a0; --soft:#222a72; --muted:#bcc6f5; --ink:#fffaf0;
+  --gold:#ffd25c; --gold-d:#ffb23d; --line:#141a4e; --good:#6ff0a4; --bad:#ff7b8a;
+  --buy:#2fbf71; --buy-l:#5be09a; --skip:#4a7dff; --skip-l:#7aa2ff;
+}
+body{background:radial-gradient(120% 60% at 50% 0%,#3b3fae 0%,#262b7a 38%,#161a52 100%) fixed,#161a52}
+body::before{background:#262b7a}
+.card{background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.02)),var(--panel);border:2px solid rgba(255,255,255,.18);border-radius:20px;
+  box-shadow:0 6px 0 rgba(10,12,50,.55),0 10px 24px rgba(8,10,40,.35);padding:14px}
+.btn{border:0;border-radius:16px;background:linear-gradient(180deg,#5260c8,#3d49a8);color:#fff;
+  box-shadow:0 4px 0 #232b78,inset 0 2px 0 rgba(255,255,255,.28);text-shadow:0 1px 0 rgba(0,0,0,.25);transition:transform .08s,box-shadow .08s}
+.btn:active:not(:disabled){transform:translateY(3px);box-shadow:0 1px 0 #232b78,inset 0 2px 0 rgba(255,255,255,.2)}
+.btn.buy{background:linear-gradient(180deg,#3fd58a,#25a864);box-shadow:0 4px 0 #136b3b,inset 0 2px 0 rgba(255,255,255,.35)}
+.btn.skip{background:linear-gradient(180deg,#6b95ff,#4469e0);box-shadow:0 4px 0 #22379a,inset 0 2px 0 rgba(255,255,255,.35)}
+.btn.gold{background:linear-gradient(180deg,#ffe07a,#ffbe3a);color:#4a2f00;text-shadow:none;box-shadow:0 4px 0 #b97a12,inset 0 2px 0 rgba(255,255,255,.55)}
+.hud{background:rgba(34,42,114,.85);backdrop-filter:blur(8px);border:2px solid rgba(255,255,255,.16);border-radius:20px;box-shadow:0 4px 0 rgba(10,12,50,.5)}
+.hud-r{border-left:2px solid rgba(255,255,255,.14)}
+.scene{border-radius:22px;border:3px solid rgba(255,255,255,.22)}
+.plate span{background:rgba(26,31,92,.78);border:0;border-radius:999px;padding:0 10px;backdrop-filter:blur(4px)}
+.plate .badge{background:linear-gradient(180deg,#ffe07a,#ffbe3a);color:#4a2f00}
+.seg .btn[aria-pressed="true"],.opt[aria-pressed="true"]{background:linear-gradient(180deg,#ffe07a,#ffbe3a);color:#4a2f00;text-shadow:none;box-shadow:0 4px 0 #b97a12,inset 0 2px 0 rgba(255,255,255,.55)}
+.next{background:linear-gradient(180deg,#ffdf70,#ffb236);color:#4a2f00;border:0;border-radius:999px;font-size:27px;letter-spacing:3px;
+  box-shadow:0 6px 0 #b7710f,0 10px 22px rgba(255,170,40,.35),inset 0 3px 0 rgba(255,255,255,.6)}
+.next::before,.next::after{background:#fff;box-shadow:0 -9px 0 -1px #fff,0 9px 0 -1px #fff;opacity:.85}
+.next:active:not(:disabled){transform:translateY(4px);box-shadow:0 2px 0 #b7710f,inset 0 3px 0 rgba(255,255,255,.5)}
+.meter{border:0;border-radius:999px;background:rgba(10,12,50,.45);height:12px}
+.meter i{border-radius:999px;background:linear-gradient(90deg,#4ce08e,#a6f26b)}
+.meter.low i{background:linear-gradient(90deg,#ff6b7a,#ffa26b)}
+h2{color:var(--gold)}
+.ncard{background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.02)),var(--panel);border:2px solid rgba(255,255,255,.16);border-radius:18px;box-shadow:0 5px 0 rgba(10,12,50,.5)}
+.face,.portrait{background:linear-gradient(180deg,#9fd0ff,#cfe8ff);border:3px solid rgba(255,255,255,.7);border-radius:16px}
+.chip{background:linear-gradient(180deg,#ffe07a,#ffbe3a);color:#4a2f00;border:0;border-radius:999px;padding:0 10px}
+.nav{background:rgba(26,31,92,.9);backdrop-filter:blur(10px);border:2px solid rgba(255,255,255,.18);border-radius:22px;padding:5px;box-shadow:0 4px 0 rgba(10,12,50,.5)}
+.nav button{background:transparent;border:0;border-radius:16px;color:var(--muted);padding:6px 2px 4px}
+.nav button[aria-selected="true"]{background:linear-gradient(180deg,rgba(255,226,122,.28),rgba(255,190,58,.18));color:var(--gold);box-shadow:inset 0 0 0 2px rgba(255,210,92,.7)}
+.nav .dot{border:2px solid #1a1f5c;border-radius:50%}
+.overlay{background:rgba(14,16,58,.78);backdrop-filter:blur(4px)}
+.ev-head{background:rgba(255,255,255,.1);border:0;border-radius:999px;padding:4px 14px}
+.ev-info,.preview,.lock,.notes span{border:0;border-radius:14px;background:rgba(10,12,50,.35)}
+.preview{background:linear-gradient(180deg,#8fc4ff,#d6ecff)}
+.bld,.sw{border:2px solid rgba(255,255,255,.5);border-radius:12px}
+.slot{border:2px solid rgba(255,255,255,.7);border-radius:14px}
+input[type=text]{border:2px solid rgba(255,255,255,.2);border-radius:14px;background:rgba(10,12,50,.4)}
+.toast{background:linear-gradient(180deg,#ffe07a,#ffbe3a);border:0;border-radius:999px;box-shadow:0 4px 0 #b97a12}
+.ledger li,.hrow{border-bottom:2px dashed rgba(255,255,255,.14)}
+.prov{display:flex;flex-direction:column;gap:8px;margin:6px 0 10px}
+.prov .btn{width:100%}
+#pvGoogle:not(:disabled){background:#fff;color:#2a2a3a;text-shadow:none;box-shadow:0 4px 0 #b8bfd8}
+#pvKakao:not(:disabled){background:#fee500;color:#2a1f00;text-shadow:none;box-shadow:0 4px 0 #b8a200}
+#pvNaver:not(:disabled){background:#03c75a;color:#fff;box-shadow:0 4px 0 #028a40}
 </style>
 
 
@@ -426,7 +478,7 @@ html.hc .label,html.hc .sub{color:#e8ecff}
 <div class="overlay" id="login" hidden><div class="sheet card">
   <h2>계정</h2>
   <div class="loginrow off" id="loginStat"></div>
-  <div class="prov"><button class="btn" type="button" disabled>Google로 시작 (준비 중)</button><button class="btn" type="button" disabled>카카오로 시작 (준비 중)</button></div>
+  <div class="prov"><button class="btn" type="button" id="pvGoogle" disabled>Google로 시작 (준비 중)</button><button class="btn" type="button" id="pvKakao" disabled>카카오로 시작 (준비 중)</button><button class="btn" type="button" id="pvNaver" disabled>네이버로 시작 (준비 중)</button></div>
   <div class="label">친구들과 순위를 겨루고, 응원 선물도 주고받아 보세요! 로그인하면 주간 랭킹과 친구 초대가 열려요. 지금은 claude 계정으로 열었을 때만 켜져요. 게스트도 모든 게임을 즐길 수 있어요.</div>
   <button class="btn gold" type="button" id="loginGo" style="width:100%;margin-top:8px">시작하기</button>
   <button class="btn mini" type="button" id="loginHelp" style="width:100%;margin-top:8px">게임 방법 보기</button>
@@ -1427,6 +1479,14 @@ var NPC={
   tuber:{name:'꼬마 PD',role:'영상 편집자',sprite:{pose:'thumb',gender:'f',skin:'#ffe0c4',style:4,hairColor:'#f783ac',outfit:'#2f6fe0',body:'tracksuit',pants:'#2f6fe0',acc:['headphones','sneaker']}},
   agent:{name:'믿음직 대리인',role:'재산 관리 대리인',sprite:{pose:'hold',gender:'f',skin:'#ffe0c4',style:5,hairColor:'#3a2a1a',outfit:'#2b3a6b',acc:['round','blazer','tie','briefcase','loafer']}},
   gov:{name:'곳간지기 장관',role:'마칸다 재정부 장관',sprite:{pose:'back',gender:'m',skin:'#f1c9a0',style:0,hairColor:'#4a4a55',outfit:'#3a4a6a',old:1,acc:['monocle','tie','blazer','loafer']}},
+  cafe:{name:'커피콩 사장님',role:'동네 카페 사장',sprite:{gender:'f',pose:'hold',skin:'#ffe0c4',style:6,hairColor:'#6b4423',outfit:'#f2a65e',body:'apron',pants:'#2a3560',acc:['bunny'].slice(0,0).concat(['scarf','sneaker'])}},
+  nurse:{name:'한결 간호사',role:'건강 지킴이',sprite:{gender:'f',pose:'thumb',skin:'#ffe0c4',style:4,hairColor:'#3a2a1a',outfit:'#f4f6ff',body:'labcoat',acc:['facemask','sneaker']}},
+  teacher:{name:'똑순이 선생님',role:'경제 교실 선생님',sprite:{gender:'f',pose:'point',skin:'#f1c9a0',style:5,hairColor:'#2b1d12',outfit:'#b197fc',pants:'#3a3f5a',acc:['round','bowtie','loafer']}},
+  idol:{name:'별빛 아이돌',role:'인기 아이돌',sprite:{gender:'f',pose:'wave',skin:'#ffe0c4',style:1,hairColor:'#f783ac',outfit:'#ff8fb1',body:'dress',acc:['ribbon','heartglass','sneaker']}},
+  teller:{name:'상냥 은행원',role:'은행 창구 직원',sprite:{gender:'f',pose:'both',skin:'#ffe0c4',style:6,hairColor:'#2b1d12',outfit:'#2b3a6b',pants:'#2b3a6b',acc:['blazer','tie','pearl','loafer']}},
+  gukbap:{name:'국밥집 이모',role:'단골 맛집 사장',sprite:{gender:'f',pose:'hips',skin:'#f1c9a0',style:3,hairColor:'#3a2a1a',outfit:'#e5484d',body:'apron',kid:0,acc:['slipper']}},
+  coder:{name:'버그킬러 개발자',role:'스타트업 개발자',sprite:{gender:'f',pose:'cross',skin:'#ffe0c4',style:4,hairColor:'#7b5cd6',outfit:'#51cf66',body:'hoodie',pants:'#3a3f5a',acc:['headphones','round','sneaker']}},
+  detective:{name:'사기 탐정 명탐',role:'금융사기 전문 탐정',sprite:{gender:'f',pose:'point',skin:'#ffe0c4',style:5,hairColor:'#1b1b2f',outfit:'#8b6b3a',acc:['beret','monocle','scarf','boots']}},
   friend:{name:'동네 친구 만수',role:'치킨집 예비 사장',sprite:{pose:'wave',gender:'m',skin:'#e8b98a',style:2,hairColor:'#6b4423',outfit:'#ffd43b',kid:1,body:'apron',pants:'#2a3560',acc:['chef','sneaker']}}
 };
 NPC.sony=NPC.son;
@@ -1851,6 +1911,68 @@ var EV=[
       {p:.5,tag:'새로운 시각!',txt:'기사 속에서 단서를 발견했어요.',insight:3,fatigue:1,clue:1,mood:'good'},
       {p:.5,tag:'꾸준히 읽기',txt:'조금씩 읽으니 용어가 익숙해져요.',insight:2,fatigue:1}]},
     {label:'아낀다',cls:'skip',outs:[{p:1,tag:'절약',txt:'돈을 아꼈어요.',fatigue:-1}]}]}
+  ,{id:'cafeBean',w:2,who:'cafe',title:'카페 사장님의 원두 공동구매',body:'"원두를 같이 사면 싸게 살 수 있어요. 한 봉지만 사 볼래요?"',
+   lesson:'가게를 직접 해 보면 재고와 원가를 이해하게 돼요. 모르는 사업은 작게 시작해요.',
+   ok:function(){return S.cash>=100000},
+   choice:[
+    {label:'한 봉지 산다 (-30,000원)',cls:'buy',cost:30000,outs:[
+      {p:.7,tag:'향이 좋아요',txt:'집에서 내려 마시니 기분이 좋아졌어요.',happy:6,insight:1},
+      {p:.3,tag:'너무 많이 샀나',txt:'양이 많아 다 못 마셨어요. 다음엔 적당히 사요.',happy:2,insight:1}]},
+    {label:'괜찮아요',cls:'skip',outs:[{p:1,tag:'절약',txt:'필요한 만큼만 쓰기로 했어요.',fatigue:-1}]}]}
+  ,{id:'checkup',w:2,who:'nurse',title:'간호사의 건강검진 안내',body:'"몸이 재산이에요. 이번 달에 건강검진 한번 받아 볼까요?"',
+   lesson:'건강을 잃으면 쓰는 돈이 훨씬 커져요. 건강도 자산이에요.',
+   ok:function(){return S.cash>=300000},
+   choice:[
+    {label:'검진 받는다 (-80,000원)',cls:'buy',cost:80000,outs:[
+      {p:.85,tag:'모두 정상!',txt:'결과가 좋아요. 마음이 놓여요.',happy:8,fatigue:-8,mood:'good'},
+      {p:.15,tag:'생활습관 조언',txt:'조금 쉬라는 조언을 받았어요.',happy:2,fatigue:-4,insight:1}]},
+    {label:'다음에 받는다',cls:'skip',outs:[{p:1,tag:'미룬다',txt:'일이 바빠서 미뤘어요.',fatigue:2}]}]}
+  ,{id:'ecoClass',w:3,who:'teacher',title:'똑순이 선생님의 경제 교실',body:'"복리가 뭔지 알아요? 오늘 수업 한 번 들어볼래요?"',
+   lesson:'복리는 이자에 이자가 붙는 거예요. 시간이 길수록 힘이 세져요.',
+   ok:function(){return S.cash>=50000},
+   choice:[
+    {label:'수업 듣는다 (-20,000원)',cls:'buy',cost:20000,outs:[
+      {p:.8,tag:'쏙쏙 이해!',txt:'복리 계산을 직접 해 보니 재밌어요.',insight:4,fatigue:2,clue:1,mood:'good'},
+      {p:.2,tag:'졸았어요',txt:'졸음이 쏟아졌지만 조금은 배웠어요.',insight:1,fatigue:1}]},
+    {label:'오늘은 쉰다',cls:'skip',outs:[{p:1,tag:'휴식',txt:'푹 쉬었어요.',fatigue:-4}]}]}
+  ,{id:'idolFan',w:2,who:'idol',title:'아이돌 팬클럽 가입 권유',body:'"팬클럽 굿즈 세트 어때요? 한정판이라 오늘까지만 살 수 있어요!"',
+   lesson:'한정판, 오늘까지라는 말은 충동구매를 부르는 말이에요. 쓸 돈 안에서만 즐겨요.',
+   ok:function(){return S.cash>=300000},
+   choice:[
+    {label:'굿즈 산다 (-120,000원)',cls:'buy',cost:120000,outs:[
+      {p:.75,tag:'행복해요!',txt:'굿즈를 보면 힘이 나요.',happy:14,fatigue:-2},
+      {p:.25,tag:'금방 질렸어요',txt:'며칠 뒤엔 서랍 속에 있어요.',happy:3}]},
+    {label:'참는다',cls:'skip',outs:[{p:1,tag:'참았다!',txt:'충동을 이겼어요.',insight:1,happy:1}]}]}
+  ,{id:'tellerTip',w:3,who:'teller',title:'은행원의 적금 안내',body:'"매달 조금씩 넣는 적금, 시작해 볼래요? 만기까지 지키는 게 중요해요."',
+   lesson:'작은 돈이라도 꾸준히 모으면 큰 힘이 돼요. 이자보다 습관이 먼저예요.',
+   ok:function(){return S.cash>=200000},
+   choice:[
+    {label:'적금 시작 (-100,000원)',cls:'buy',cost:100000,outs:[
+      {p:.9,tag:'저축 습관!',txt:'꾸준히 모으기로 했어요. 마음이 든든해요.',happy:4,insight:2,mood:'good'},
+      {p:.1,tag:'중도 해지',txt:'급한 일이 생겨 일부만 돌려받았어요.',cash:-10000,insight:1}]},
+    {label:'나중에 한다',cls:'skip',outs:[{p:1,tag:'미룬다',txt:'생각해 보기로 했어요.',fatigue:0}]}]}
+  ,{id:'gukbap',w:2,who:'gukbap',title:'국밥집 이모의 단골 쿠폰',body:'"우리 집 단골 되면 열 번째는 공짜야! 오늘 한 그릇 할래?"',
+   lesson:'작은 소비도 쌓이면 큰돈이에요. 쿠폰은 쓰는 만큼만 의미 있어요.',
+   ok:function(){return S.cash>=20000},
+   choice:[
+    {label:'한 그릇 먹는다 (-9,000원)',cls:'buy',cost:9000,outs:[
+      {p:.9,tag:'든든해요',txt:'따뜻한 국물에 피로가 풀렸어요.',happy:7,fatigue:-6},
+      {p:.1,tag:'덤 서비스',txt:'이모가 고기를 듬뿍 얹어줬어요.',happy:11,fatigue:-8,mood:'good'}]},
+    {label:'집에서 먹는다',cls:'skip',outs:[{p:1,tag:'절약',txt:'집밥으로 아꼈어요.',happy:-1}]}]}
+  ,{id:'appIdea',w:2,who:'coder',title:'개발자의 앱 아이디어 투자 제안',body:'"이 앱, 대박 날 거예요! 지금 100만 원만 넣으면…"',
+   lesson:'초기 스타트업은 대부분 실패해요. 잃어도 되는 돈의 일부만 넣어요.',
+   ok:function(){return S.cash>=1500000},
+   choice:[
+    {label:'투자한다 (-1,000,000원)',cls:'buy',cost:1000000,outs:[
+      {p:.1,tag:'대박!',txt:'앱이 인기를 얻어 3배로 돌아왔어요!',cash:3000000,happy:15,mood:'good'},
+      {p:.3,tag:'본전',txt:'원금 정도는 돌려받았어요.',cash:1000000,happy:2},
+      {p:.6,tag:'폐업',txt:'서비스가 문을 닫았어요. 투자금이 사라졌어요.',happy:-8,insight:2}]},
+    {label:'정중히 거절',cls:'skip',outs:[{p:1,tag:'신중!',txt:'모르는 분야엔 크게 걸지 않기로 했어요.',insight:2}]}]}
+  ,{id:'detect',w:2,who:'detective',scam:true,title:'탐정의 사기 수법 교실',body:'"요즘 사기는 진짜 같아요. 문자 속 링크, 함부로 누르면 안 돼요."',
+   lesson:'링크는 누르지 말고, 기관은 직접 전화해서 확인해요.',
+   choice:[
+    {label:'수법을 배운다',cls:'buy',outs:[{p:1,tag:'사기 예방!',txt:'새로운 수법들을 알게 됐어요.',insight:3,happy:2,flag:'scamAvoid',mood:'good'}]},
+    {label:'괜찮아요',cls:'skip',outs:[{p:1,tag:'넘김',txt:'다음에 들어보기로 했어요.',fatigue:0}]}]}
 ];
 function evById(id){var e=null;EV.forEach(function(x){if(x.id===id)e=x});return e}
 function pickEvent(){
@@ -3041,7 +3163,10 @@ function group(sel,vals,key,labels,isColor){
 function buildCreate(){
   group('#oGender',['m','f'],'gender',['남자','여자'],false);
   group('#oSkin',SKINS,'skin',['밝은 피부','살구색 피부','구릿빛 피부','갈색 피부','진한 갈색 피부'],true);
-  group('#oStyle',[0,1,2,3,4,5,6,7,8],'style',['단정','긴 머리','뾰족','곱슬','포니','단발','올림','민머리','올백'],false);
+  var HM=[[0,'단정'],[2,'뾰족'],[3,'곱슬'],[8,'올백'],[5,'단발'],[7,'민머리']],HF=[[1,'긴 머리'],[5,'단발'],[4,'포니테일'],[6,'올림'],[3,'웨이브'],[2,'짧은 뾰족']];
+  var HL=draft.gender==='f'?HF:HM;
+  if(!HL.some(function(h){return h[0]===draft.style}))draft.style=HL[0][0];
+  group('#oStyle',HL.map(function(h){return h[0]}),'style',HL.map(function(h){return h[1]}),false);
   group('#oHair',HAIRS,'hairColor',['검정','갈색','금색','빨강','남색','보라'],true);
   group('#oOutfit',OUTFITS,'outfit',['빨강 옷','파랑 옷','초록 옷','노랑 옷','보라 옷','하양 옷'],true);
   var pv=$('#preview');pv.innerHTML='';pv.appendChild(spriteEl(Object.assign({hero:1},draft),136));
@@ -3805,7 +3930,7 @@ else{buildNav();buildCreate();$('#create').hidden=false;if(TAMPERED)setTimeout(f
 netInit();
 
 /* ===== shell: splash, login screen, help / manual ===== */
-var GAME_NAME='내일의 부자들',APP_VER='v30';
+var GAME_NAME='내일의 부자들',APP_VER='v31';
 function drawSplash(){
   var c=$('#splCv');if(!c||!c.getContext)return;var vc=c,c=document.createElement('canvas');c.width=96;c.height=112;var g=c.getContext('2d');g.imageSmoothingEnabled=false;
   var sky=['#0a0f33','#0f1748','#162058','#1d2a6a','#27367a','#324488','#3d5296'];
@@ -3829,10 +3954,41 @@ function splashStart(){
   $('#splash').hidden=true;
   if(!S){$('#login').hidden=false;loginRefresh();}
 }
+
+/* ---- social login via Supabase Auth (buttons light up only when the provider is enabled on the server) ---- */
+var SB_URL='https://kqdhgicluwhgkwadcxpw.supabase.co',SB_KEY='sb_publishable_ScxX2wp0R-Z1IQkK4Y_nTQ_d9z9lSWn';
+var SB_PROV={pvGoogle:['google','Google'],pvKakao:['kakao','카카오'],pvNaver:['naver','네이버']};
+function sbAuthGet(){try{return JSON.parse(localStorage.getItem('bujaAuth')||'null')}catch(e){return null}}
+function sbCatchReturn(){
+  try{
+    var h=location.hash||'';if(h.indexOf('access_token=')<0)return;
+    var q={};h.slice(1).split('&').forEach(function(p){var a=p.split('=');q[a[0]]=decodeURIComponent(a[1]||'')});
+    history.replaceState(null,'',location.pathname+location.search);
+    if(!q.access_token)return;
+    fetch(SB_URL+'/auth/v1/user',{headers:{apikey:SB_KEY,Authorization:'Bearer '+q.access_token}}).then(function(r){return r.json()}).then(function(u){
+      var m=u&&u.user_metadata||{};
+      try{localStorage.setItem('bujaAuth',JSON.stringify({id:u.id,prov:(u.app_metadata&&u.app_metadata.provider)||'',name:m.name||m.full_name||m.nickname||m.preferred_username||'',t:Date.now()}))}catch(e){}
+      loginRefresh();
+    }).catch(function(){});
+  }catch(e){}
+}
+function sbInitButtons(){
+  var go=function(prov){location.href=SB_URL+'/auth/v1/authorize?provider='+prov+'&redirect_to='+encodeURIComponent(location.origin+location.pathname);};
+  Object.keys(SB_PROV).forEach(function(id){var b=$('#'+id);if(b)b.addEventListener('click',function(){go(SB_PROV[id][0]);});});
+  try{
+    fetch(SB_URL+'/auth/v1/settings',{headers:{apikey:SB_KEY}}).then(function(r){return r.json()}).then(function(j){
+      var ex=(j&&j.external)||{};
+      Object.keys(SB_PROV).forEach(function(id){var b=$('#'+id),k=SB_PROV[id][0];if(!b)return;
+        if(ex[k]){b.disabled=false;b.textContent=SB_PROV[id][1]+'로 시작';}
+        else{b.disabled=true;b.textContent=SB_PROV[id][1]+'로 시작 (준비 중)';}});
+    }).catch(function(){});
+  }catch(e){}
+}
 function loginRefresh(){
   var on=!!(NET&&NET.ok),st=$('#loginStat');if(!st)return;
   st.className='loginrow '+(on?'on':'off');
-  st.textContent=on?'● claude 계정으로 로그인됨 · 랭킹·친구 초대 사용 가능':'○ 로그인 안 됨 · 게스트로 시작 (이 기기에만 저장)';
+  var au=sbAuthGet();
+  st.textContent=on?'● claude 계정으로 로그인됨 · 랭킹·친구 초대 사용 가능':(au?'● '+({google:'Google',kakao:'카카오',naver:'네이버'}[au.prov]||'소셜')+' 계정 확인됨'+(au.name?' · '+au.name:''):'○ 로그인 안 됨 · 게스트로 시작 (이 기기에만 저장)');
 }
 var HP=[
  ['🎮 게임 소개',['딱 1,000만원. 이걸로 1년 뒤 얼마를 만들 수 있을까요? 💰','뉴스를 먼저 읽는 사람이 이겨요. 금리가 오르면? 기름값이 뛰면? 소문은 진짜일까요?','사기꾼의 달콤한 제안에 속지 않고, 위기에서 버티고, 기회에서 베팅하세요!','친구들과 시즌 랭킹으로 겨루고, 매주 새로운 이야기와 이벤트가 열려요.','실제 돈이 오가지 않는 교육용 시뮬레이션이에요. 마음껏 실패해 봐도 괜찮아요. 진짜 돈은 그대로니까요!']],
@@ -3868,6 +4024,7 @@ function renderHelp(){
 function wireShell(){
   $('#splName').textContent=GAME_NAME;$('#spVer').textContent=APP_VER;
   drawSplash();
+  sbInitButtons();sbCatchReturn();
   $('#splash').addEventListener('click',splashStart);
   $('#loginGo').addEventListener('click',function(){$('#login').hidden=true;});
   $('#loginHelp').addEventListener('click',function(){openHelp(0);});
