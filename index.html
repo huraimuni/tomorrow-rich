@@ -380,6 +380,15 @@ input[type=text]{border:2px solid rgba(255,255,255,.2);border-radius:14px;backgr
 #pvGoogle:not(:disabled){background:#fff;color:#2a2a3a;text-shadow:none;box-shadow:0 4px 0 #b8bfd8}
 #pvKakao:not(:disabled){background:#fee500;color:#2a1f00;text-shadow:none;box-shadow:0 4px 0 #b8a200}
 #pvNaver:not(:disabled){background:#03c75a;color:#fff;box-shadow:0 4px 0 #028a40}
+
+/* tutorial coach */
+#coach{position:fixed;left:12px;right:12px;top:calc(84px + env(safe-area-inset-top,0px));z-index:60;background:#fff8e1;color:#2b2140;border:3px solid #f2c14e;border-radius:18px;padding:10px 12px;box-shadow:0 8px 24px rgba(0,0,0,.45);font-family:var(--f-body)}
+#coach .cc-step{font-family:var(--f-display);font-size:12px;color:#a6761d}
+#coach .cc-txt{font-size:15px;line-height:1.45;font-weight:500;margin:2px 0 8px;word-break:keep-all}
+#coach .cc-row{display:flex;gap:8px;justify-content:flex-end}
+#coach .btn.mini{min-height:34px}
+.coach-hl{outline:4px solid #ffd54a!important;outline-offset:2px;border-radius:14px;animation:coachpulse 1s ease-in-out infinite;position:relative;z-index:55}
+@keyframes coachpulse{50%{outline-color:#ff8a3d;box-shadow:0 0 0 6px rgba(255,213,74,.35)}}
 </style>
 
 
@@ -1575,6 +1584,7 @@ var FAC=['boom','rt','oil','tech','ent','cons','coin'];
 var FNAME={boom:'경기',rt:'금리',oil:'유가',tech:'기술',ent:'연예',cons:'소비',coin:'코인'};
 var ASSETS=[
   {id:'bond',name:'마칸다 국채',short:'국채',col:'#9ad0ff',risk:1,vol:.002,base:.00012,beta:{rt:-.002,boom:-.0012},desc:'나라가 빌린 돈에 이자를 받아요. 아주 안전하지만 수익은 작아요. 금리가 오르면 값이 내려가요.'},
+  {id:'etf',name:'마칸다 200 인덱스',short:'인덱스',col:'#5ad1b4',risk:2,vol:.009,base:.00018,beta:{boom:.003,tech:.003,cons:.002,rt:-.001},desc:'마칸다 대표 기업 200개를 한꺼번에 담은 상품이에요. 한 회사가 망해도 크게 안 흔들려요. 대박은 없지만 오래 들고 있으면 안정적으로 자라요. 매달 조금씩 사는 적립식에 잘 어울려요.'},
   {id:'gold',name:'황금 거북이 금',short:'금',col:'#f2c14e',risk:2,vol:.008,base:.0001,beta:{boom:-.003,rt:-.0015},desc:'불안할 때 사람들이 찾는 금이에요. 경기가 나빠지면 오르는 편이에요.'},
   {id:'villa',name:'행복빌라 101호',short:'빌라',col:'#c9a37a',risk:2,vol:.004,base:.0003,beta:{rt:-.004,boom:.003},desc:'집값이에요. 천천히 움직이고, 금리가 내리고 경기가 좋으면 올라요.'},
   {id:'bankstk',name:'금고은행 주식',short:'은행',col:'#7ad0a0',risk:2,vol:.012,base:.0002,beta:{rt:.004,boom:.004},desc:'은행은 금리가 오르면 이자 장사로 더 벌어요. 경기를 타요.'},
@@ -1745,6 +1755,7 @@ function save(){
     S.clk=tnow();
     var j=JSON.stringify(S);
     localStorage.setItem(KEY,h53(j,0x5f3)+'.'+h53(j+SALT,0x9a1)+'.'+btoa(unescape(encodeURIComponent(j))));
+    localStorage.setItem('bujaSaveT',String(Date.now()));
   }catch(e){}
 }
 function dateInfo(){var d=S.day-1;return {y:Math.floor(d/360)+1,m:Math.floor((d%360)/30)+1,d:(d%30)+1}}
@@ -2170,7 +2181,7 @@ function nextDay(){
     hp(jb.hp);fat(jb.fat);qinc('work',1);
   }else if(S.action==='video'&&S.cr&&S.cr.on){videoDay(L);
   }else{hp(4);fat(-10);L.push({l:'푹 쉬었어요 (행복 +4, 피로 -10)'});qinc('rest',1);}
-  careerDaily(L);
+  careerDaily(L);dcaDaily(L);
   if(S.deposit>0){
     var gross=S.deposit*S.rate/100/360,tax=gross*0.154;
     S.deposit+=gross-tax;dsee(['deposit','interest','tax']);if(S.day>30)dsee(['compound']);
@@ -2467,12 +2478,12 @@ $('#finClose').addEventListener('click',function(){$('#fin').hidden=true});
 
 /* 유학 */
 var ABROAD=[
- {id:'usd',n:'달러랜드 · 금융학',days:60,fee:20000000,gain:{fin:2},ins:8,hp:0,desc:'세계 금융의 중심에서 시장 읽는 법을 배워요.'},
- {id:'dragon',n:'용왕국 · 공학',days:45,fee:12000000,gain:{biz:1},ins:6,hp:0,desc:'만드는 힘과 기술 사업을 익혀요.'},
- {id:'snow',n:'눈꽃 연방 · 복지설계',days:40,fee:9000000,gain:{safe:1},ins:3,hp:10,desc:'안전망과 노후 설계를 배우고 마음도 편해져요.'},
- {id:'sava',n:'사바나 · 자원경제',days:30,fee:6000000,gain:{re:1},ins:4,hp:0,desc:'원자재와 땅의 가치를 현장에서 배워요.'},
- {id:'sun',n:'태양 왕국 · 에너지',days:40,fee:10000000,gain:{fin:1},ins:5,hp:0,desc:'에너지 산업의 큰 흐름을 읽어요.'},
- {id:'coco',n:'코코넛 제도 · 관광경영',days:35,fee:8000000,gain:{biz:1},ins:2,hp:15,desc:'휴양지 경영을 배우며 푹 쉬고 와요.'}
+ {id:'usd',info:'양도세 15% · 금리 높음 · 강한 분야: 은행·인덱스',n:'달러랜드 · 금융학',days:60,fee:20000000,gain:{fin:2},ins:8,hp:0,desc:'세계 금융의 중심에서 시장 읽는 법을 배워요.'},
+ {id:'dragon',info:'양도세 10% · 제조 강국 · 강한 분야: 반도체·물류',n:'용왕국 · 공학',days:45,fee:12000000,gain:{biz:1},ins:6,hp:0,desc:'만드는 힘과 기술 사업을 익혀요.'},
+ {id:'snow',info:'양도세 25% · 복지 최고 · 강한 분야: 국채·보험',n:'눈꽃 연방 · 복지설계',days:40,fee:9000000,gain:{safe:1},ins:3,hp:10,desc:'안전망과 노후 설계를 배우고 마음도 편해져요.'},
+ {id:'sava',info:'양도세 5% · 자원 부국 · 강한 분야: 금·토지',n:'사바나 · 자원경제',days:30,fee:6000000,gain:{re:1},ins:4,hp:0,desc:'원자재와 땅의 가치를 현장에서 배워요.'},
+ {id:'sun',info:'양도세 0% · 석유 부국 · 강한 분야: 석유·에너지',n:'태양 왕국 · 에너지',days:40,fee:10000000,gain:{fin:1},ins:5,hp:0,desc:'에너지 산업의 큰 흐름을 읽어요.'},
+ {id:'coco',info:'양도세 0% · 관광 천국 · 강한 분야: 카페·부동산',n:'코코넛 제도 · 관광경영',days:35,fee:8000000,gain:{biz:1},ins:2,hp:15,desc:'휴양지 경영을 배우며 푹 쉬고 와요.'}
 ];
 function abInit(o){o.ab=o.ab||null;o.degs=o.degs||[];}
 function abroadDay(L){
@@ -2506,6 +2517,7 @@ function abOpen(){
     ABROAD.forEach(function(x){
       var c=el('div','card');c.appendChild(el('b','',x.n+(S.degs.indexOf(x.id)>=0?' ✅수료':'')));
       c.appendChild(el('div','sub',x.desc+' · '+x.days+'일 · 학비 '+kr(x.fee)));
+      c.appendChild(el('div','sub','🌐 '+x.info+' (마칸다 세계 설정이에요)'));
       var bt=el('button','btn mini buy','떠나기');bt.type='button';bt.disabled=S.cash<x.fee+1000000;
       bt.addEventListener('click',function(){
         S.cash-=x.fee;S.ab={id:x.id,n:x.n,left:x.days};
@@ -2522,17 +2534,17 @@ function abOpen(){
 
 /* ---------- career: jobs, layoffs, and a video channel (creator) ---------- */
 var JOBS=[
- {id:'part',n:'편의점 알바',w:70000,fat:6,hp:-3,lay:0,need:{},desc:'언제든 할 수 있어요. 해고 걱정이 없어요.'},
- {id:'office',n:'회사 사원',w:105000,fat:7,hp:-3,lay:.004,need:{ins:10},desc:'일당이 높고 안정적이에요. 불황엔 구조조정이 있어요.'},
- {id:'sales',n:'영업 사원',w:85000,fat:8,hp:-3,lay:.005,need:{ins:5},bonus:1,desc:'일당은 낮지만 가끔 큰 계약 수당이 터져요.'},
- {id:'dev',n:'개발자',w:150000,fat:8,hp:-3,lay:.005,need:{stage:1,ins:30},desc:'몸값이 높지만 기술 경기를 타요.'},
- {id:'mgr',n:'팀장',w:210000,fat:9,hp:-4,lay:.006,need:{stage:2,ins:45},desc:'급여도 책임도 커요.'}
+ {id:'part',n:'편의점 알바',w:70000,fat:6,hp:-2,lay:0,need:{},desc:'언제든 할 수 있어요. 해고 걱정이 없어요.'},
+ {id:'office',n:'회사 사원',w:105000,fat:7,hp:-2,lay:.004,need:{ins:20},desc:'일당이 높고 안정적이에요. 불황엔 구조조정이 있어요.'},
+ {id:'sales',n:'영업 사원',w:85000,fat:8,hp:-2,lay:.005,need:{ins:5},bonus:1,desc:'일당은 낮지만 가끔 큰 계약 수당이 터져요.'},
+ {id:'dev',n:'개발자',w:150000,fat:8,hp:-2,lay:.005,need:{stage:1,ins:30},desc:'몸값이 높지만 기술 경기를 타요.'},
+ {id:'mgr',n:'팀장',w:210000,fat:9,hp:-3,lay:.006,need:{stage:2,ins:45},desc:'급여도 책임도 커요.'}
 ];
 function jobOf(id){var r=JOBS[0];JOBS.forEach(function(j){if(j.id===(id||S.job))r=j});return r}
-function jobWage(){return Math.round(jobOf().w*(1+.08*(S.jobLv||0)))}
+function jobWage(){return Math.round(jobOf().w*(1+.05*(S.jobLv||0)))}
 function careerInit(o){
   o.job=o.job||'part';o.jobLv=o.jobLv||0;o.jobDays=o.jobDays||0;o.jobCd=o.jobCd||0;o.jobWarn=o.jobWarn||0;
-  abInit(o);
+  abInit(o);o.dca=o.dca||{};
   o.cr=o.cr||{on:false,subs:0,vids:0,base:0,strike:0,tot:0};
 }
 function jobNeedTxt(j){var a=[];if(j.need.stage)a.push('Lv.'+(j.need.stage+1)+' 이상');if(j.need.ins)a.push('통찰 '+j.need.ins+' 이상');return a.length?a.join(' · '):'조건 없음'}
@@ -2573,7 +2585,7 @@ function careerDaily(L){
   var j=jobOf();
   /* promotion & layoff */
   if(S.job!=='part'){
-    if(S.action==='work'){S.jobDays++;if(S.jobDays%60===0&&S.jobLv<5){S.jobLv++;addNews({day:S.day,who:'boss',title:'연봉 인상!',body:'성실하게 일한 덕에 연봉이 올랐어요. 일당 '+kr(jobWage())+'.',effect:'일당 +8%'});}}
+    if(S.action==='work'){S.jobDays++;if(S.jobDays%60===0&&S.jobLv<5){S.jobLv++;addNews({day:S.day,who:'boss',title:'연봉 인상!',body:'성실하게 일한 덕에 연봉이 올랐어요. 일당 '+kr(jobWage())+'.',effect:'일당 +5%'});}}
     if(S.jobWarn&&S.day>=S.jobWarn){
       S.jobWarn=0;
       if(rnd()<.7){
@@ -2628,6 +2640,17 @@ function renderCareer(){
 }
 $('#careerBtn').addEventListener('click',function(){renderCareer();$('#career').hidden=false});
 $('#careerClose').addEventListener('click',function(){$('#career').hidden=true});
+
+/* 적립식: 매주 정해진 금액을 자동으로 산다 (현금 100만원은 남겨둔다) */
+function dcaDaily(L){
+  if(!S.dca||S.day%7!==0)return;
+  Object.keys(S.dca).forEach(function(id){
+    var amt=S.dca[id];if(!amt||!assetById(id))return;
+    if(S.cash<amt+1000000){L.push({l:assetById(id).short+' 적립 건너뜀 (현금 부족)'});return;}
+    if(typeof assetLock==='function'&&assetLock(assetById(id)))return;
+    buyAsset(id,amt);L.push({l:assetById(id).short+' 적립식 매수',a:-amt});S.dcaN=(S.dcaN||0)+1;
+  });
+}
 
 /* ---------- time of day, wealth tiers, owned items ---------- */
 var PAL={
@@ -3569,6 +3592,14 @@ function renderAssetSheet(){
       });
     });br.appendChild(b);});
   box.appendChild(br);
+  var dr=el('div','row');dr.appendChild(el('span','tag','적립식'));
+  var cur=(S.dca&&S.dca[a.id])||0;
+  [[0,'끄기'],[3e5,'주 30만'],[1e6,'주 100만']].forEach(function(x){
+    var b=el('button','btn mini'+(cur===x[0]?' gold':''),x[1]);b.type='button';
+    b.addEventListener('click',function(){S.dca=S.dca||{};if(x[0])S.dca[a.id]=x[0];else delete S.dca[a.id];save();renderAssetSheet();toast(x[0]?'7일마다 '+kr(x[0])+'씩 자동으로 사요':'적립식을 껐어요');});
+    dr.appendChild(b);});
+  box.appendChild(dr);
+  box.appendChild(el('div','label','7일마다 정해진 금액을 자동으로 사요. 현금이 100만원 아래로 내려가면 건너뛰어요. 오르내림에 상관없이 꾸준히 사면 평균 매입가가 고르게 돼요.'));
   var sr=el('div','row');sr.appendChild(el('span','tag','팔기'));
   [[.5,'절반'],[1,'전부']].forEach(function(x){
     var b=el('button','btn mini skip',x[1]);b.type='button';b.disabled=!h;
@@ -4048,8 +4079,119 @@ if(S){$('#create').hidden=true;switchTab('home');liveSync();comeback();render();
 else{buildNav();buildCreate();$('#create').hidden=false;if(TAMPERED)setTimeout(function(){toast('저장 데이터가 올바르지 않아 새로 시작해요');},300);}
 netInit();
 
+/* ---------- 따라하기 튜토리얼: 눌러야 할 버튼을 깜빡여 알려주고, 누르면 다음 단계로 ---------- */
+var COACH=[
+ {t:'일하러 가 볼까요? 아래 「알바 하기」를 눌러요.',sel:function(){return $('#actWork')},ok:function(){return S.action==='work'}},
+ {t:'좋아요! 이제 「다음 날」을 눌러 하루를 보내요.',sel:function(){return $('#nextBtn')},ok:function(){return S.day>=(S.flags.coachDay0||1)+1}},
+ {t:'뉴스가 도착했어요. 아래 「뉴스」 탭에서 읽어 봐요. 뉴스가 돈의 움직임을 알려줘요.',sel:function(){return $('#nav [data-tab="news"]')},ok:function(){return TAB==='news'}},
+ {t:'이제 「투자」 탭으로 가요.',sel:function(){return $('#nav [data-tab="market"]')},ok:function(){return TAB==='market'}},
+ {t:'「마칸다 200 인덱스」를 눌러 보세요. 처음 시작하기 가장 안전한 상품이에요.',sel:function(){var r=null;document.querySelectorAll('#v-market button').forEach(function(b){if(b.textContent.indexOf('인덱스')>=0)r=b});return r},ok:function(){return !$('#asheet').hidden}},
+ {t:'「100만」을 눌러 사 보세요. 연습이니 실패해도 괜찮아요. (수수료 0.3%)',sel:function(){return document.querySelector('#asBody .btn.buy')},ok:function(){return !!(S.hold&&S.hold.etf)}},
+ {t:'🎉 첫 투자 성공! 이제 「홈」에서 하루씩 넘기며 뉴스와 값이 어떻게 변하는지 지켜봐요. 도움말은 메뉴에 있어요.',sel:function(){return $('#nav [data-tab="home"]')},ok:function(){return false},last:true}
+];
+function coachBox(){
+  var b=document.getElementById('coach');
+  if(!b){
+    b=document.createElement('div');b.id='coach';b.hidden=true;
+    b.innerHTML='<div class="cc-step" id="ccStep"></div><div class="cc-txt" id="ccTxt"></div><div class="cc-row"><button type="button" class="btn mini" id="ccSkip">건너뛰기</button><button type="button" class="btn mini gold" id="ccDone" hidden>끝내기</button></div>';
+    document.body.appendChild(b);
+    b.querySelector('#ccSkip').addEventListener('click',function(){coachEnd(false)});
+    b.querySelector('#ccDone').addEventListener('click',function(){coachEnd(true)});
+  }
+  return b;
+}
+function coachEnd(done){
+  if(!S)return;S.flags.coachDone=1;
+  if(done&&!S.flags.coachGift){S.flags.coachGift=1;S.gems+=3;toast('튜토리얼 완료! 젬 3개를 받았어요');}
+  save();coachClear();coachBox().hidden=true;
+}
+function coachClear(){document.querySelectorAll('.coach-hl').forEach(function(e){e.classList.remove('coach-hl')});}
+function coachRestart(){if(!S)return;S.flags.coachDone=0;S.flags.coachStep=0;S.flags.coachDay0=S.day;save();}
+function coachTick(){
+  try{
+    if(!S||S.flags.coachDone)return;
+    var busy=['splash','login','create','help','menu','settings','career','fin','abroad'].some(function(id){var e=document.getElementById(id);return e&&!e.hidden&&id!=='asheet';});
+    var box=coachBox();
+    if(!S.flags.helpSeen||busy){box.hidden=true;coachClear();return;}
+    if(S.flags.coachStep===undefined){
+      if(S.day>6||Object.keys(S.hold||{}).length){S.flags.coachDone=1;save();return;}
+      S.flags.coachStep=0;S.flags.coachDay0=S.day;
+    }
+    var i=S.flags.coachStep|0;
+    while(i<COACH.length-1&&COACH[i].ok()){i++;}
+    if(i!==S.flags.coachStep){S.flags.coachStep=i;save();}
+    var st=COACH[i];
+    box.hidden=false;
+    box.querySelector('#ccStep').textContent='따라하기 '+(i+1)+' / '+COACH.length;
+    box.querySelector('#ccTxt').textContent=st.t;
+    box.querySelector('#ccDone').hidden=!st.last;
+    var tg=null;try{tg=st.sel();}catch(e){}
+    coachClear();if(tg)tg.classList.add('coach-hl');
+  }catch(e){}
+}
+setInterval(coachTick,450);
+
+/* ---------- i18n: runtime text translation layer (ko is the source language) ----------
+   English is applied by matching rendered Korean text (numbers become '#') against EN_DICT.
+   Missing strings stay Korean and are collected in window.__i18nMissing for the next translation pass. */
+var LANG=(function(){try{var v=localStorage.getItem('bujaLang');if(v==='ko'||v==='en')return v;}catch(e){}
+  return (navigator.language||'ko').toLowerCase().indexOf('ko')===0?'ko':'en';})();
+var EN_DICT={
+ '내일의 부자들':'Tomorrow\'s Rich',
+ '다음 날':'Next Day','메뉴':'Menu','설정':'Settings','닫기':'Close','도움말':'Help','경제 사전':'Econ Dictionary','처음부터 다시':'Start Over',
+ '🎓 유학':'🎓 Study Abroad','💼 직업 · 영상 채널':'💼 Jobs · Video Channel','💳 대출 · 신용 · 세금 센터':'💳 Loans · Credit · Tax Center',
+ '알바 하기':'Part-time Job','🎓 유학 중':'🎓 Studying Abroad','푹 쉬었어요 (행복 +#, 피로 -#)':'Got a good rest (Happy +#, Fatigue -#)',
+ '내 첫 #만원 받고 시작!':'Start with my first ₩#0,000!',
+ '닉네임':'Nickname','현재 직업: 편의점 알바':'Current job: Convenience store','구직':'Job Search','영상 채널':'Video Channel',
+ '지원하기':'Apply','퇴사하고 알바로':'Quit to part-time','떠나기':'Go','🎓 유학':'🎓 Study Abroad',
+ '남은 기간 #일':'# days left','순자산':'Net Worth','현금':'Cash','예금':'Savings','행복':'Happy','피로':'Fatigue','통찰':'Insight',
+ '재기하기':'Try Again','Google로 시작':'Continue with Google','카카오로 시작':'Continue with Kakao',
+ 'Google로 시작 (준비 중)':'Continue with Google (soon)','카카오로 시작 (준비 중)':'Continue with Kakao (soon)',
+ '게스트로 시작':'Play as guest','경제 교육 게임':'Economics learning game',
+ '달러랜드 · 금융학':'Dollarland · Finance','용왕국 · 공학':'Dragon Kingdom · Engineering','눈꽃 연방 · 복지설계':'Snowflake Union · Welfare Design',
+ '사바나 · 자원경제':'Savanna · Resource Economics','태양 왕국 · 에너지':'Sun Kingdom · Energy','코코넛 제도 · 관광경영':'Coconut Isles · Tourism Mgmt',
+ '회사 사원':'Office Worker','영업 사원':'Sales Rep','개발자':'Developer','팀장':'Team Lead','편의점 알바':'Convenience Store Part-timer',
+ '새싹':'Sprout','저축러':'Saver','투자자':'Investor','부자':'Rich','대부호':'Tycoon'
+};
+var EN_MISS={};
+function i18nKey(s){return s.replace(/-?\d[\d,]*(?:\.\d+)?/g,'#')}
+function i18nNums(s){return s.match(/-?\d[\d,]*(?:\.\d+)?/g)||[]}
+function trEn(s){
+  var t=s.trim();if(!t||!/[가-힣]/.test(t))return s;
+  var hit=EN_DICT[t];var nums=null;
+  if(hit===undefined){var k=i18nKey(t);hit=EN_DICT[k];if(hit!==undefined)nums=i18nNums(t);}
+  if(hit===undefined){EN_MISS[t]=(EN_MISS[t]||0)+1;return s;}
+  if(nums){var i=0;hit=hit.replace(/#/g,function(){return nums[i++]||'#';});}
+  return s.replace(t,hit);
+}
+function i18nWalk(root){
+  if(LANG!=='en')return;
+  var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null),n;
+  while((n=w.nextNode())){var v=n.nodeValue;if(v&&/[가-힣]/.test(v)){var r=trEn(v);if(r!==v)n.nodeValue=r;}}
+  if(root.querySelectorAll)root.querySelectorAll('[placeholder],[aria-label]').forEach(function(e){
+    ['placeholder','aria-label'].forEach(function(a){var v=e.getAttribute(a);if(v&&/[가-힣]/.test(v)){var r=trEn(v);if(r!==v)e.setAttribute(a,r);}});});
+}
+function i18nStart(){
+  if(LANG!=='en')return;
+  document.documentElement.lang='en';
+  var busy=false;
+  var mo=new MutationObserver(function(ms){
+    if(busy)return;busy=true;
+    try{ms.forEach(function(m){
+      if(m.type==='characterData'){var v=m.target.nodeValue;if(v&&/[가-힣]/.test(v)){var r=trEn(v);if(r!==v)m.target.nodeValue=r;}}
+      else m.addedNodes.forEach(function(x){if(x.nodeType===3){var v=x.nodeValue;if(v&&/[가-힣]/.test(v)){var r=trEn(v);if(r!==v)x.nodeValue=r;}}else if(x.nodeType===1)i18nWalk(x);});
+    });}catch(e){}
+    busy=false;
+  });
+  mo.observe(document.body,{childList:true,subtree:true,characterData:true});
+  i18nWalk(document.body);
+}
+function i18nSet(l){try{localStorage.setItem('bujaLang',l)}catch(e){}location.reload();}
+window.__i18nMissing=function(){return Object.keys(EN_MISS).sort(function(a,b){return EN_MISS[b]-EN_MISS[a]});};
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',i18nStart);else setTimeout(i18nStart,0);
+
 /* ===== shell: splash, login screen, help / manual ===== */
-var GAME_NAME='내일의 부자들',APP_VER='v34';
+var GAME_NAME='내일의 부자들',APP_VER='v35';
 function drawSplash(){
   var c=$('#splCv');if(!c||!c.getContext)return;var vc=c,c=document.createElement('canvas');c.width=96;c.height=112;var g=c.getContext('2d');g.imageSmoothingEnabled=false;
   var sky=['#0a0f33','#0f1748','#162058','#1d2a6a','#27367a','#324488','#3d5296'];
@@ -4157,6 +4299,67 @@ function sbRankTick(){
   });
 }
 setInterval(function(){if(Date.now()-SB_LAST>25000){SB_LAST=Date.now();sbRankTick();}},5000);
+
+/* ---- 클라우드 저장: 로그인한 계정의 진행 데이터를 서버에 자동 백업 (saves 테이블, 본인만 읽고 씀) ---- */
+var CL={checked:false,asking:false,allow:false,lastPush:0,lastTry:0,ui:false};
+function clLocalT(){try{return +localStorage.getItem('bujaSaveT')||0}catch(e){return 0}}
+function clOwner(v){try{if(v===undefined)return localStorage.getItem('bujaCloudOwner')||'';localStorage.setItem('bujaCloudOwner',v);}catch(e){return ''}}
+function clPush(){
+  var a=sbAuthGet(),t=null;if(!a||!S)return;
+  try{t=localStorage.getItem(KEY)}catch(e){}
+  if(!t)return;
+  var lt=clLocalT();
+  sbRest('saves?on_conflict=id',{method:'POST',prefer:'resolution=merge-duplicates,return=minimal',body:{id:a.id,data:t,day:S.day,net:Math.round(net()),updated_at:new Date().toISOString()}},function(st){
+    if(st>=200&&st<300){CL.lastPush=lt;clOwner(a.id);}
+  });
+}
+function clApply(data){
+  var old=null;try{old=localStorage.getItem(KEY);localStorage.setItem(KEY,data);}catch(e){toast('저장소를 쓸 수 없어요');return false;}
+  var o=load();
+  if(!o){try{if(old===null)localStorage.removeItem(KEY);else localStorage.setItem(KEY,old);}catch(e){}toast('서버 기록을 읽지 못했어요');return false;}
+  S=o;save();clOwner((sbAuthGet()||{}).id||'');CL.allow=true;CL.lastPush=clLocalT();
+  ['create','login','settings','menu'].forEach(function(id){var e=document.getElementById(id);if(e)e.hidden=true;});
+  render();toast('서버에 저장된 기록을 불러왔어요');return true;
+}
+function clAsk(r,hasLocal){
+  var ov=document.getElementById('cloudAsk');
+  if(!ov){
+    ov=document.createElement('div');ov.className='overlay';ov.id='cloudAsk';ov.hidden=true;
+    ov.innerHTML='<div class="sheet card"><h2>☁ 클라우드 저장</h2><div id="clBody"></div><div class="row" style="margin-top:8px"><button class="btn gold" type="button" id="clLoad" style="flex:1"></button><button class="btn" type="button" id="clKeep" style="flex:1"></button></div></div>';
+    document.body.appendChild(ov);
+  }
+  var b=ov.querySelector('#clBody');b.innerHTML='';
+  var d=new Date(Date.parse(r.updated_at)||Date.now());
+  b.appendChild(el('p','hp-l','이 계정에 저장된 기록이 있어요: '+r.day+'일째 · 순자산 '+kr(r.net)+' · '+(d.getMonth()+1)+'월 '+d.getDate()+'일 '+d.getHours()+'시 '+('0'+d.getMinutes()).slice(-2)+'분'));
+  b.appendChild(el('p','hp-l',hasLocal?'이 기기에도 다른 기록이 있어요. 어느 쪽으로 이어서 할까요? 고르지 않은 쪽은 사라질 수 있어요.':'불러와서 이어서 할까요?'));
+  var lb=ov.querySelector('#clLoad'),kb=ov.querySelector('#clKeep');
+  lb.textContent='서버 기록으로 이어서';kb.textContent=hasLocal?'이 기기 기록 유지':'새로 시작';
+  lb.onclick=function(){ov.hidden=true;CL.asking=false;clApply(r.data);};
+  kb.onclick=function(){ov.hidden=true;CL.asking=false;if(hasLocal){CL.allow=true;clOwner((sbAuthGet()||{}).id||'');clPush();toast('이 기기 기록을 서버에 저장해요');}else{CL.allow=true;}};
+  ov.hidden=false;CL.asking=true;
+}
+function clCheck(){
+  if(CL.checked||CL.asking)return;
+  var a=sbAuthGet();if(!a)return;
+  CL.asking=true;
+  sbRest('saves?id=eq.'+a.id+'&select=data,day,net,updated_at',{},function(st,j){
+    CL.asking=false;
+    if(st!==200||!Array.isArray(j))return;      /* 서버 설정 전이거나 오프라인: 다음에 다시 */
+    CL.checked=true;
+    if(!j.length){CL.allow=true;return;}
+    var r=j[0],t=null;try{t=localStorage.getItem(KEY)}catch(e){}
+    var rt=Date.parse(r.updated_at)||0,lt=clLocalT();
+    if(t&&t===r.data){CL.allow=true;clOwner(a.id);return;}
+    if(t&&S&&clOwner()===a.id&&lt>=rt-5000){CL.allow=true;return;}   /* 내 기기가 더 최근 */
+    clAsk(r,!!(t&&S));
+  });
+}
+setInterval(function(){
+  if(!sbOn())return;
+  if(!CL.checked){clCheck();return;}
+  if(CL.allow&&S&&!CL.asking&&clLocalT()>CL.lastPush&&Date.now()-CL.lastTry>20000){CL.lastTry=Date.now();clPush();}
+},6000);
+document.addEventListener('visibilitychange',function(){if(document.hidden&&sbOn()&&CL.checked&&CL.allow&&S&&clLocalT()>CL.lastPush)clPush();});
 function sbInitButtons(){
   var go=function(prov){location.href=SB_URL+'/auth/v1/authorize?provider='+prov+'&redirect_to='+encodeURIComponent(location.origin+location.pathname);};
   Object.keys(SB_PROV).forEach(function(id){var b=$('#'+id);if(b)b.addEventListener('click',function(){go(SB_PROV[id][0]);});});
@@ -4183,17 +4386,19 @@ var HP=[
  ['📰 뉴스와 투자',['뉴스가 나오면 관련 자산의 값이 움직여요. 금리·경기·유가 같은 원인과 결과를 연결해 보세요.','한 곳에 몰아넣지 말고 나눠 사요(분산투자). 사고팔 때 수수료 0.3%가 들어요.','투자 탭에서 가격이 왜 움직였는지 이유를 볼 수 있어요.']],
  ['🎲 선택 이벤트',['뉴스 중에는 두 갈래 선택이 나와요. 결과는 확률로 정해져요.','통찰과 지식이 오를수록 확률 힌트가 정확해져요.','"급하게 돈을 보내라", "원금 보장" 같은 말은 사기의 신호예요!']],
  ['📚 능력치와 책',['행복·피로·통찰이 있어요. 통찰이 높으면 힌트가 잘 보여요.','상점의 책을 읽으면 분야별 지식이 올라 조언과 기대값이 열려요.','투자 노트의 스무고개 퀴즈를 풀면 공략 힌트를 얻어요.']],
- ['💼 직업과 영상 채널',['자산 탭의 「직업·영상 채널」에서 직업에 지원해요. 알바보다 일당이 높은 회사 사원·영업·개발자·팀장이 있고, 통찰과 지식이 높을수록 합격률이 올라요.','회사는 불황에 구조조정이 있어요. 소문이 돌고 3일 뒤에 결정되니 비상금과 빚을 점검해요. 해고되면 퇴직금을 받고 알바로 돌아가요. 오래 일하면 연봉이 올라요.','채널을 열면 홈에서 「영상 만들기」를 고를 수 있어요. 일당은 없지만 영상이 쌓일수록 자는 동안에도 수익이 들어와요. 구독자 100명부터 수익이 생겨요. 논란이나 저작권 신고 같은 위험도 있어요.']],
+ ['💼 직업과 영상 채널',['자산 탭의 「직업·영상 채널」에서 직업에 지원해요. 알바보다 일당이 높은 회사 사원·영업·개발자·팀장이 있고, 직업마다 통찰(회사 사원은 20 이상)이나 성장 단계 조건이 있어요. 통찰과 지식이 높을수록 합격률이 올라요.','회사는 불황에 구조조정이 있어요. 소문이 돌고 3일 뒤에 결정되니 비상금과 빚을 점검해요. 해고되면 퇴직금을 받고 알바로 돌아가요. 60일 일할 때마다 일당이 5%씩 올라요(최대 5번).','채널을 열면 홈에서 「영상 만들기」를 고를 수 있어요. 일당은 없지만 영상이 쌓일수록 자는 동안에도 수익이 들어와요. 구독자 100명부터 수익이 생겨요. 논란이나 저작권 신고 같은 위험도 있어요.']],
+ ['🎓 유학',['메뉴의 「유학」에서 나라와 과정을 골라 떠나요. 학비를 먼저 내고, 30~60일 동안 알바·출근을 못 해요. 생활비는 계속 나가니 현금을 넉넉히 남겨요.','돌아오면 분야 지식과 통찰이 올라요. 나라마다 세금과 강한 분야가 달라서 그 나라 이야기를 배울 수 있어요. (세금·특징은 마칸다 세계의 가상 설정이에요)','유학은 당장 돈이 되지 않아요. 돈이 모자라면 떠날 수 없고, 가 있는 동안 빚 이자는 계속 늘어요.']],
+ ['📈 인덱스와 적립식',['「마칸다 200 인덱스」는 대표 기업 200개를 한꺼번에 담은 상품이에요. 한 회사가 흔들려도 덜 다쳐요. 대박은 없지만 꾸준히 자라요.','자산 화면의 「적립식」을 켜면 7일마다 정해진 금액을 자동으로 사요. 오를 때도 내릴 때도 꾸준히 사서 평균 매입가를 고르게 만드는 방법이에요.','현금이 100만원 아래로 내려가면 그 주는 건너뛰어요. 수수료 0.3%는 매번 붙어요. 끄고 싶으면 「끄기」를 눌러요.']],
  ['🏁 시즌과 후발주자',['랭킹은 4주마다 새 시즌이 시작돼요. 시즌 랭킹은 「시작 금액 대비 하루 평균 성장률」이라서 늦게 시작해도 불리하지 않아요.','늦게 시작하면 처음 45일 동안 알바 일당 보너스와 통찰을 받고 시작해요. 시즌이 끝나면 성장률에 따라 젬을 받아요.','전체 순자산 랭킹도 있지만 먼저 시작한 사람이 유리해요. 마음 편히 시즌 랭킹으로 겨뤄 봐요.']],
  ['🏆 주간 랭킹과 이야기',['메뉴의 「주간 랭킹」에서 8가지 부문(시즌 성장률·순자산·지난주 성장률·도감·구독자·직업 일당·응원왕·출석) 순위를 봐요.','순위는 매주 월요일 0시에 지난주 기록으로 확정돼요. 지난주에 접속해서 기록을 남긴 사람만 올라가요.','보상: 1위 30젬 · 2~3위 20 · 10위 안 10 · 참여만 해도 3젬 (여러 부문 중 최고 순위 기준, 주 1회).','매주 테마가 바뀌고 관련 소식이 자주 나와요. 주간 목표를 채우면 12젬!','4주마다 이야기가 한 편 끝나요. 매주 한 장면씩 시장이 움직여요.','3일 넘게 쉬다 돌아오면 환영 선물이 있고 불이익은 없어요.']],
  ['🔗 응원 선물',['메뉴의 「오늘의 응원 선물」에서 내 링크를 친구에게 공유해요. 친구가 오늘 내 코드로 응원하면 나는 선물을 받아요.','선물은 매번 무조건 하나! 젬·용돈·행운·피로 회복 같은 흔한 선물부터 클로버·방패·왕관 같은 희귀 선물까지 있어요. 하루 최대 10번이에요.']],
  ['💳 대출과 신용',['자산 탭의 「대출·신용·세금 센터」에서 돈을 빌릴 수 있어요. 신용대출은 금리가 높고, 집을 사면 집을 담보로 싼 금리의 주택담보대출을 받을 수 있어요.','이자는 매일 원금에 더해져요. 제때 갚고 빚이 적으면 신용점수가 오르고, 점수가 낮으면 금리가 비싸져요.','빚이 재산의 65%를 넘으면 은행이 투자와 담보를 강제로 팔아 빚을 갚아요. 빌린 돈으로 투자하면 번 돈도 잃는 돈도 커져요.']],
  ['🏛 정부 정책과 지역 투자',['정부는 경기에 따라 정책을 내놓아요. 시장이 뜨거우면 양도세 인상·대출 규제, 식으면 재난지원금·세금 인하가 나와요. 팔아서 이익이 나면 양도세가 붙어요.','신도시·물류단지·토지는 정부 투자 소식에 크게 움직여요. 소문은 확정이 아닐 수 있어요. 확정되면 오르고, 취소되면 원래대로 돌아와요.','국산차보다 수입차가 값이 더 빨리 떨어져요. 새 차는 사자마자 값이 빠져요.']],
  ['🏆 성장과 랭킹',['순자산이 오르면 새싹 → 저축러 → 투자자 → 자산가 → 부자 → 대부호로 성장해요. 단계마다 새 기능이 열려요.','로그인하면 가입자 순자산 랭킹과 친구 초대 보상을 쓸 수 있어요.']],
- ['❓ 자주 묻는 질문',['Q. 저장은? 이 기기의 브라우저에 자동 저장돼요. 사이트 데이터를 지우면 사라져요.','Q. 자동 진행 중 이벤트가 뜨면? 직접 고르라고 멈춰요. 상점의 「대리인 계약」(200만원)이 있으면 대리인이 기대값이 높은 쪽으로 대신 골라 주고, 결과는 뉴스에 남아요.','Q. 파산하면? 재기 지원금 200만원으로 다시 시작해요.','Q. 실제 돈이 드나요? 전혀 아니에요.','Q. 로그인은? 구글·카카오로 로그인하면 랭킹이 켜지고 닉네임이 보호돼요.']],
+ ['❓ 자주 묻는 질문',['Q. 저장은? 이 기기의 브라우저에 자동 저장돼요. 구글·카카오로 로그인하면 서버에도 자동 백업돼서, 기기를 바꿔도 같은 계정으로 로그인하면 이어서 할 수 있어요. 로그인하지 않으면 사이트 데이터를 지울 때 사라져요.','Q. 자동 진행 중 이벤트가 뜨면? 직접 고르라고 멈춰요. 상점의 「대리인 계약」(200만원)이 있으면 대리인이 기대값이 높은 쪽으로 대신 골라 주고, 결과는 뉴스에 남아요.','Q. 파산하면? 재기 지원금 200만원으로 다시 시작해요.','Q. 실제 돈이 드나요? 전혀 아니에요.','Q. 로그인은? 구글·카카오로 로그인하면 랭킹이 켜지고 닉네임이 보호돼요.']],
  ['📄 이용 안내 (테스트판)',['이 게임은 교육·오락용 비공개 테스트판이에요. 무료이며 결제 기능이 없어요.','게임 속 젬·아이템·재산은 가상이고 현금이나 코인으로 바꿀 수 없어요.','테스트 중 데이터는 예고 없이 초기화될 수 있어요.','부정 행위나 타인을 불쾌하게 하는 닉네임은 제한될 수 있어요.','정식 출시 전에 정식 이용약관으로 바뀌어요.']],
- ['🔒 개인정보 안내',['서버에 저장되는 정보: 닉네임, 순자산, 진행 일수, 초대 코드.','이름·연락처·위치 같은 정보는 받지 않아요.','게임 진행 데이터는 내 기기 브라우저에 저장돼요.','만 14세 미만은 보호자와 함께 이용해 주세요.','정식 출시 전에 개인정보 처리방침을 따로 공개해요.']],
- ['⚠ 알아두세요',['교육용 게임이에요. 특정 상품의 투자를 권하지 않아요.','게임 속 이름과 인물은 모두 가상의 패러디예요.','랭킹을 위해 닉네임·순자산·일수만 서버에 저장돼요.','저장 조작 같은 부정 행위는 랭킹에서 제외돼요.']]
+ ['🔒 개인정보 안내',['랭킹을 위해 서버에 저장되는 정보: 닉네임, 순자산, 진행 일수, 칭호, 계정 고유번호, 초대 코드.','이름·연락처·위치는 게임이 받지 않아요. 구글·카카오 로그인 인증 정보(이메일 등)는 인증 서비스가 따로 관리해요.','게임 진행 데이터(자산·아이템 등)는 내 기기에 저장되고, 로그인하면 내 계정에만 보이도록 서버에도 백업돼요.','만 14세 미만은 보호자와 함께 이용해 주세요.','정식 출시 전에 개인정보 처리방침을 따로 공개해요.']],
+ ['⚠ 알아두세요',['교육용 게임이에요. 특정 상품의 투자를 권하지 않아요.','게임 속 이름과 인물은 모두 가상의 패러디예요.','랭킹을 위해 필요한 최소한의 정보만 서버에 저장돼요.','저장 조작 같은 부정 행위는 랭킹에서 제외돼요.']]
 ];
 var hpi=0;
 function openHelp(i){hpi=i||0;renderHelp();$('#help').hidden=false;}
@@ -4235,6 +4440,11 @@ function renderSettings(){
   var r2=el('div','row');r2.appendChild(el('b','','고대비'));
   [['끄기',0],['켜기',1]].forEach(function(x){var bt=el('button','btn mini'+(PREF.hc===x[1]?' gold':''),x[0]);bt.type='button';bt.addEventListener('click',function(){PREF.hc=x[1];applyPref();savePref();renderSettings();});r2.appendChild(bt);});
   b.appendChild(r2);
+  var rl=el('div','row');rl.appendChild(el('b','','Language / 언어'));
+  [['한국어','ko'],['English','en']].forEach(function(x){var bt=el('button','btn mini'+(LANG===x[1]?' gold':''),x[0]);bt.type='button';bt.addEventListener('click',function(){if(LANG!==x[1])i18nSet(x[1]);});rl.appendChild(bt);});
+  b.appendChild(rl);
+  var rt=el('div','row');rt.appendChild(el('b','','따라하기 튜토리얼'));
+  var tb=el('button','btn mini','다시 하기');tb.type='button';tb.addEventListener('click',function(){coachRestart();$('#settings').hidden=true;toast('튜토리얼을 다시 시작해요');});rt.appendChild(tb);b.appendChild(rt);
   var r3=el('div','row');r3.appendChild(el('b','','소액도 확인하기'));
   [['끄기',0],['켜기',1]].forEach(function(x){var bt=el('button','btn mini'+(PREF.cf===x[1]?' gold':''),x[0]);bt.type='button';bt.addEventListener('click',function(){PREF.cf=x[1];savePref();renderSettings();});r3.appendChild(bt);});
   b.appendChild(r3);b.appendChild(el('div','label','100만원 이하 거래는 기본으로 바로 실행돼요. 켜면 모든 거래에서 한 번 더 물어봐요.'));
