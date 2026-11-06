@@ -184,7 +184,7 @@ h2{font-size:16px;margin-bottom:4px}
 .list{flex:1;min-height:0;display:flex;flex-direction:column;gap:8px;overflow:hidden}
 .pg{flex:none;min-height:36px;display:flex;gap:10px;align-items:center;justify-content:center}
 .pg .btn{min-width:64px}.pgn{font-family:var(--f-num);font-size:13px;color:var(--muted)}
-.ncard{padding:6px 8px;gap:8px;height:86px;overflow:hidden}
+.ncard{padding:6px 8px;gap:8px;height:108px;overflow:hidden}
 .ncard h3{font-size:15px;margin:0}.ncard p{font-size:12px;margin:1px 0 3px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .ncard .who{font-size:11px}.chip{font-size:11px}
 .macro{flex:none;display:flex;flex-wrap:wrap;gap:4px}
@@ -3726,7 +3726,7 @@ function renderStats(){
 }
 function renderNews(){
   var box=$('#news');box.innerHTML='';
-  var per=fitN(box,86,8),page=pager($('#newsPg'),'news',S.news.length,per);
+  var per=fitN(box,108,8),page=pager($('#newsPg'),'news',S.news.length,per);
   S.news.slice(page*per,page*per+per).forEach(function(n){
     var it=el('div','ncard'),f=el('div','face');f.appendChild(spriteEl(NPC[n.who].sprite,56));it.appendChild(f);
     var t=el('div','txt');
@@ -4254,7 +4254,7 @@ window.__i18nMissing=function(){return Object.keys(EN_MISS).sort(function(a,b){r
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',i18nStart);else setTimeout(i18nStart,0);
 
 /* ===== shell: splash, login screen, help / manual ===== */
-var GAME_NAME='내일의 부자들',APP_VER='v37';
+var GAME_NAME='내일의 부자들',APP_VER='v38';
 function drawSplash(){
   var c=$('#splCv');if(!c||!c.getContext)return;var vc=c,c=document.createElement('canvas');c.width=96;c.height=112;var g=c.getContext('2d');g.imageSmoothingEnabled=false;
   var sky=['#0a0f33','#0f1748','#162058','#1d2a6a','#27367a','#324488','#3d5296'];
