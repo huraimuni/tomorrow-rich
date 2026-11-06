@@ -2,15 +2,15 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&family=DotGothic16&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
 /* Night-town pixel game. Gold-trimmed navy panels. App shell is exactly one screen tall: no page scroll, lists are paginated to fit. Single dark look on purpose. */
 :root{
   --bg:#080c26; --panel:#121a45; --panel2:#1b2560; --gold:#f2c14e; --gold-d:#a8782a; --ink:#f4f0e2; --muted:#9aa6d6;
   --good:#5ee08f; --bad:#ff6b73; --buy:#2f9e44; --buy-l:#51cf66; --skip:#2f6fe0; --skip-l:#5c93f0; --line:#04061a; --soft:#0d1338;
-  --f-display:'Jua','Gowun Dodum',system-ui,sans-serif;
-  --f-body:'Gowun Dodum','Jua',system-ui,sans-serif;
-  --f-num:'DotGothic16','Gowun Dodum',monospace;
+  --f-display:'Jua','Noto Sans KR',system-ui,sans-serif;
+  --f-body:'Noto Sans KR','Jua',system-ui,sans-serif;
+  --f-num:'Jua','Noto Sans KR',system-ui,sans-serif;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
@@ -479,7 +479,7 @@ input[type=text]{border:2px solid rgba(255,255,255,.2);border-radius:14px;backgr
   <h2>계정</h2>
   <div class="loginrow off" id="loginStat"></div>
   <div class="prov"><button class="btn" type="button" id="pvGoogle" disabled>Google로 시작 (준비 중)</button><button class="btn" type="button" id="pvKakao" disabled>카카오로 시작 (준비 중)</button></div>
-  <div class="label">친구들과 순위를 겨루고, 응원 선물도 주고받아 보세요! 로그인하면 주간 랭킹과 친구 초대가 열려요. 지금은 claude 계정으로 열었을 때만 켜져요. 게스트도 모든 게임을 즐길 수 있어요.</div>
+  <div class="label">친구들과 순위를 겨루고, 응원 선물도 주고받아 보세요! Google·카카오로 로그인하면 랭킹과 닉네임 보호가 켜져요. 게스트도 모든 게임을 즐길 수 있어요.</div>
   <button class="btn gold" type="button" id="loginGo" style="width:100%;margin-top:8px">시작하기</button>
   <button class="btn mini" type="button" id="loginHelp" style="width:100%;margin-top:8px">게임 방법 보기</button>
 </div></div>
@@ -2872,7 +2872,7 @@ function renderDict(){
 var NET={db:null,uid:null,ok:false,lb:[],joinN:0,busy:false,lastPush:0,lastNet:null,sub1:null,sub2:null,state:'offline'};
 var MILES=[{n:1,t:'친구 1명: 보상 상자'},{n:3,t:'친구 3명: 젬 20개',g:20},{n:5,t:'친구 5명: 방패 배지',item:'shield',alt:25},{n:10,t:'친구 10명: 황금 왕관',item:'crowng',alt:90}];
 var LAUNCH=Math.floor(Date.UTC(2026,10,6)/86400000);
-var SHARE_URL='https://claude.ai/artifact/WkqS9ZH3PrFMieRqC3Bz1q';
+var SHARE_URL='https://huraimuni.github.io/tomorrow-rich/';
 function seasonNo(){return Math.max(0,Math.floor((dayNum()-LAUNCH)/28))}
 function seasonLeft(){return 28-(Math.max(0,dayNum()-LAUNCH)%28)}
 function lateB(){return (S&&S.day<=45)?Math.min(.25,(S.late||0)*.004):0}
@@ -4049,7 +4049,7 @@ else{buildNav();buildCreate();$('#create').hidden=false;if(TAMPERED)setTimeout(f
 netInit();
 
 /* ===== shell: splash, login screen, help / manual ===== */
-var GAME_NAME='내일의 부자들',APP_VER='v33';
+var GAME_NAME='내일의 부자들',APP_VER='v34';
 function drawSplash(){
   var c=$('#splCv');if(!c||!c.getContext)return;var vc=c,c=document.createElement('canvas');c.width=96;c.height=112;var g=c.getContext('2d');g.imageSmoothingEnabled=false;
   var sky=['#0a0f33','#0f1748','#162058','#1d2a6a','#27367a','#324488','#3d5296'];
@@ -4173,7 +4173,7 @@ function loginRefresh(){
   var on=!!(NET&&NET.ok),st=$('#loginStat');if(!st)return;
   st.className='loginrow '+(on?'on':'off');
   var au=sbAuthGet();
-  st.textContent=on?'● claude 계정으로 로그인됨 · 랭킹·친구 초대 사용 가능':(au?'● '+({google:'Google',kakao:'카카오',naver:'네이버'}[au.prov]||'소셜')+' 계정 확인됨'+(au.name?' · '+au.name:''):'○ 로그인 안 됨 · 게스트로 시작 (이 기기에만 저장)');
+  st.textContent=on?'● 로그인됨 · 랭킹·친구 초대 사용 가능':(au?'● '+({google:'Google',kakao:'카카오'}[au.prov]||'소셜')+' 계정 확인됨'+(au.name?' · '+au.name:''):'○ 로그인 안 됨 · 게스트로 시작 (이 기기에만 저장)');
 }
 var HP=[
  ['🎮 게임 소개',['딱 1,000만원. 이걸로 1년 뒤 얼마를 만들 수 있을까요? 💰','뉴스를 먼저 읽는 사람이 이겨요. 금리가 오르면? 기름값이 뛰면? 소문은 진짜일까요?','사기꾼의 달콤한 제안에 속지 않고, 위기에서 버티고, 기회에서 베팅하세요!','친구들과 시즌 랭킹으로 겨루고, 매주 새로운 이야기와 이벤트가 열려요.','실제 돈이 오가지 않는 교육용 시뮬레이션이에요. 마음껏 실패해 봐도 괜찮아요. 진짜 돈은 그대로니까요!']],
@@ -4190,7 +4190,7 @@ var HP=[
  ['💳 대출과 신용',['자산 탭의 「대출·신용·세금 센터」에서 돈을 빌릴 수 있어요. 신용대출은 금리가 높고, 집을 사면 집을 담보로 싼 금리의 주택담보대출을 받을 수 있어요.','이자는 매일 원금에 더해져요. 제때 갚고 빚이 적으면 신용점수가 오르고, 점수가 낮으면 금리가 비싸져요.','빚이 재산의 65%를 넘으면 은행이 투자와 담보를 강제로 팔아 빚을 갚아요. 빌린 돈으로 투자하면 번 돈도 잃는 돈도 커져요.']],
  ['🏛 정부 정책과 지역 투자',['정부는 경기에 따라 정책을 내놓아요. 시장이 뜨거우면 양도세 인상·대출 규제, 식으면 재난지원금·세금 인하가 나와요. 팔아서 이익이 나면 양도세가 붙어요.','신도시·물류단지·토지는 정부 투자 소식에 크게 움직여요. 소문은 확정이 아닐 수 있어요. 확정되면 오르고, 취소되면 원래대로 돌아와요.','국산차보다 수입차가 값이 더 빨리 떨어져요. 새 차는 사자마자 값이 빠져요.']],
  ['🏆 성장과 랭킹',['순자산이 오르면 새싹 → 저축러 → 투자자 → 자산가 → 부자 → 대부호로 성장해요. 단계마다 새 기능이 열려요.','로그인하면 가입자 순자산 랭킹과 친구 초대 보상을 쓸 수 있어요.']],
- ['❓ 자주 묻는 질문',['Q. 저장은? 이 기기의 브라우저에 자동 저장돼요. 사이트 데이터를 지우면 사라져요.','Q. 자동 진행 중 이벤트가 뜨면? 직접 고르라고 멈춰요. 상점의 「대리인 계약」(200만원)이 있으면 대리인이 기대값이 높은 쪽으로 대신 골라 주고, 결과는 뉴스에 남아요.','Q. 파산하면? 재기 지원금 200만원으로 다시 시작해요.','Q. 실제 돈이 드나요? 전혀 아니에요.','Q. 로그인은? 지금은 claude 계정으로 열면 랭킹이 켜져요. 구글·카카오는 준비 중이에요.']],
+ ['❓ 자주 묻는 질문',['Q. 저장은? 이 기기의 브라우저에 자동 저장돼요. 사이트 데이터를 지우면 사라져요.','Q. 자동 진행 중 이벤트가 뜨면? 직접 고르라고 멈춰요. 상점의 「대리인 계약」(200만원)이 있으면 대리인이 기대값이 높은 쪽으로 대신 골라 주고, 결과는 뉴스에 남아요.','Q. 파산하면? 재기 지원금 200만원으로 다시 시작해요.','Q. 실제 돈이 드나요? 전혀 아니에요.','Q. 로그인은? 구글·카카오로 로그인하면 랭킹이 켜지고 닉네임이 보호돼요.']],
  ['📄 이용 안내 (테스트판)',['이 게임은 교육·오락용 비공개 테스트판이에요. 무료이며 결제 기능이 없어요.','게임 속 젬·아이템·재산은 가상이고 현금이나 코인으로 바꿀 수 없어요.','테스트 중 데이터는 예고 없이 초기화될 수 있어요.','부정 행위나 타인을 불쾌하게 하는 닉네임은 제한될 수 있어요.','정식 출시 전에 정식 이용약관으로 바뀌어요.']],
  ['🔒 개인정보 안내',['서버에 저장되는 정보: 닉네임, 순자산, 진행 일수, 초대 코드.','이름·연락처·위치 같은 정보는 받지 않아요.','게임 진행 데이터는 내 기기 브라우저에 저장돼요.','만 14세 미만은 보호자와 함께 이용해 주세요.','정식 출시 전에 개인정보 처리방침을 따로 공개해요.']],
  ['⚠ 알아두세요',['교육용 게임이에요. 특정 상품의 투자를 권하지 않아요.','게임 속 이름과 인물은 모두 가상의 패러디예요.','랭킹을 위해 닉네임·순자산·일수만 서버에 저장돼요.','저장 조작 같은 부정 행위는 랭킹에서 제외돼요.']]
@@ -4275,6 +4275,16 @@ loadPref();
 wireShell();
 (function(){var sb=$('#settingsBtn');if(sb)sb.addEventListener('click',function(){$('#menu').hidden=true;renderSettings();$('#settings').hidden=false;});
  var sc=$('#setClose');if(sc)sc.addEventListener('click',function(){$('#settings').hidden=true;});})();
+
+/* 새 버전이 있으면 자동으로 다시 불러오기 */
+(function(){try{
+  if(location.protocol.indexOf('http')!==0)return;
+  fetch(location.pathname+'?v='+Date.now(),{cache:'no-store'}).then(function(r){return r.text()}).then(function(t){
+    var m=t.match(/APP_VER='(v\d+)'/);if(!m||m[1]===APP_VER)return;
+    var k='bujaUp_'+m[1];if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1');
+    location.replace(location.pathname+'?v='+m[1]);
+  }).catch(function(){});
+}catch(e){}})();
 
 })();
 </script>
