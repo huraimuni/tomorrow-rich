@@ -27,7 +27,7 @@ canvas.px{image-rendering:pixelated;image-rendering:crisp-edges;display:block}
 .btn{font-family:var(--f-display);font-size:16px;background:var(--panel2);color:var(--ink);border:3px solid var(--line);border-radius:8px;
   box-shadow:inset 0 -4px 0 rgba(0,0,0,.3),inset 0 2px 0 rgba(255,255,255,.12);padding:8px 12px;min-height:44px;transition:transform .06s}
 .btn:active:not(:disabled){transform:translateY(2px)}
-.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn:disabled{opacity:.4;filter:grayscale(.6);cursor:not-allowed}
 .btn.buy{background:var(--buy);border-color:#0b3d17}
 .btn.skip{background:var(--skip);border-color:#0d2a63}
 .btn.gold{background:var(--gold);color:#3a2a00;border-color:#6b4a0c}
@@ -125,7 +125,7 @@ h2{font-size:19px;margin-bottom:8px;color:var(--gold)}
 input[type=text]{width:100%;font-family:var(--f-display);font-size:18px;padding:8px 10px;border:3px solid var(--line);border-radius:8px;background:var(--soft);color:var(--ink);margin:6px 0 12px;min-height:44px}
 .dict dt{font-family:var(--f-display);font-size:17px;margin-top:10px;color:var(--gold)}
 .dict dd{margin:0;font-size:14px}
-.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:50;background:var(--gold);color:#3a2a00;border:3px solid #6b4a0c;
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:200;pointer-events:none;background:var(--gold);color:#3a2a00;border:3px solid #6b4a0c;
   font-family:var(--f-display);padding:6px 14px;border-radius:8px;max-width:calc(100% - 32px);text-align:center}
 .toast[hidden]{display:none}
 .foot{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--muted)}
@@ -394,6 +394,18 @@ input[type=text]{border:2px solid rgba(255,255,255,.2);border-radius:14px;backgr
 #dictTabs{display:flex;flex-wrap:wrap;gap:6px}
 #dictTabs .btn{flex:1 1 auto;white-space:nowrap;padding:0 10px;font-size:13px}
 .dchip{white-space:normal;line-height:1.2;min-height:40px;padding:4px 6px;text-overflow:clip}
+
+.btn.off{opacity:.38;filter:grayscale(.7);box-shadow:none}
+.jlack{font-weight:700}
+
+#meCv{display:block;width:100%;max-width:216px;margin:0 auto 8px;border-radius:12px;border:2px solid var(--line);image-rendering:pixelated}
+.merow{display:flex;gap:8px;align-items:center;background:var(--panel2);border:2px solid var(--line);border-radius:10px;padding:5px 8px;margin-bottom:4px}
+.merow.empty{opacity:.65}.merow .mslot{flex:none;width:44px;text-align:center;font-family:var(--f-display);font-size:12px;color:var(--gold)}
+.merow .mtx{min-width:0}.merow .mtx b{font-size:14px}.merow .mtx .sub{font-size:12px}
+.metot{margin-top:6px;padding:6px 8px;border:2px solid var(--gold-d);border-radius:10px}.metot .sub{font-size:13px}
+.nvh{display:flex;gap:10px;align-items:center;margin-bottom:8px}.nvh h3{font-size:18px;color:var(--gold);margin:2px 0}.nvp{font-size:15px;line-height:1.5;margin:4px 0 8px}
+.dchip.lock{opacity:.5}
+#v-asset{overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
 </style>
 
 
@@ -559,9 +571,17 @@ input[type=text]{border:2px solid rgba(255,255,255,.2);border-radius:14px;backgr
     <button class="btn mini" type="button" id="helpBtn">도움말</button>
     <button class="btn mini" type="button" id="settingsBtn">설정</button>
     <button class="btn mini" id="resetBtn" type="button">처음부터 다시</button></div>
-  <div class="row" style="margin-top:8px"><button class="btn mini gold" type="button" id="abroadBtn" style="width:100%">🎓 유학</button></div>
+  <div class="row" style="margin-top:8px"><button class="btn mini gold" type="button" id="meBtn" style="flex:1">🧍 내 캐릭터</button><button class="btn mini gold" type="button" id="abroadBtn" style="flex:1">🎓 유학</button></div>
   <button class="btn gold" type="button" id="menuClose" style="margin-top:8px;width:100%">닫기</button>
 </div></div>
+
+<div class="overlay" id="me" hidden><div class="sheet card">
+  <h2>🧍 내 캐릭터</h2>
+  <canvas id="meCv" width="216" height="216" class="px"></canvas>
+  <div id="meBody"></div>
+  <div class="row" style="margin-top:8px"><button class="btn mini gold" type="button" id="meShop" style="flex:1">옷 갈아입으러 가기</button><button class="btn mini" type="button" id="meClose" style="flex:1">닫기</button></div>
+</div></div>
+<div class="overlay" id="nview" hidden><div class="sheet card"><div id="nviewBody"></div><button class="btn gold" type="button" id="nviewClose" style="width:100%;margin-top:8px">닫기</button></div></div>
 
 <div class="overlay" id="dict" hidden><div class="sheet card">
   <h2 id="dictCnt">경제 사전</h2>
@@ -576,7 +596,6 @@ input[type=text]{border:2px solid rgba(255,255,255,.2);border-radius:14px;backgr
   <p>빚이 너무 커졌어요. 하지만 끝이 아니에요. 재기 지원금 200만원으로 다시 일어설 수 있어요.</p>
   <button class="next" type="button" id="rebirthBtn" style="font-size:20px;width:100%">재기하기</button>
 </div></div>
-
 <script>
 (function(){
 'use strict';
@@ -2293,14 +2312,15 @@ function fmtT(ms){var s=Math.ceil(ms/1000);return Math.floor(s/60)+':'+('0'+(s%6
 /* ---------- bank ---------- */
 var toastT=null;
 function toast(t){var el0=$('#toast');el0.textContent=t;el0.hidden=false;clearTimeout(toastT);toastT=setTimeout(function(){el0.hidden=true},2000);}
+function busyMsg(){toast(S&&S.broke?'먼저 재기 화면을 확인해 주세요':'먼저 떠 있는 이벤트를 골라 주세요');}
 function deposit(v){
-  if(S.pending||S.broke)return;
+  if(S.pending||S.broke){busyMsg();return;}
   var a=v==='all'?Math.max(0,S.cash):Math.min(+v,Math.max(0,S.cash));
   if(a<=0){toast('넣을 현금이 없어요');return;}
   S.cash-=a;S.deposit+=a;qinc('dep',1);save();render();toast('예금에 '+kr(a)+' 넣었어요');
 }
 function withdraw(v){
-  if(S.pending||S.broke)return;
+  if(S.pending||S.broke){busyMsg();return;}
   var a=v==='all'?S.deposit:Math.min(+v,S.deposit);
   if(a<=0){toast('빼낼 예금이 없어요');return;}
   S.deposit-=a;S.cash+=a;save();render();toast('현금으로 '+kr(a)+' 찾았어요');
@@ -2330,7 +2350,7 @@ function mortLimit(){if(!S.house||S.credit<450)return 0;var cur=S.loans.mort?S.l
 function repayMort(){var m=S.loans.mort;if(!m)return;var pay=Math.min(m.p,Math.max(0,S.cash));m.p-=pay;S.cash-=pay;if(m.p<1)delete S.loans.mort;}
 function settle(){['cred','mort'].forEach(function(k){var l=S.loans[k];if(!l)return;var pay=Math.min(l.p,Math.max(0,S.cash));l.p-=pay;S.cash-=pay;if(l.p<1)delete S.loans[k];});}
 function borrow(k,amt){
-  if(S.pending||S.broke)return;
+  if(S.pending||S.broke){busyMsg();return;}
   var lim=k==='mort'?mortLimit():credLimit();
   if(S.credit<450){toast('신용점수가 낮아 빌릴 수 없어요');return;}
   if(amt>lim){toast('지금은 '+kr(lim)+'까지만 빌릴 수 있어요');return;}
@@ -2554,13 +2574,14 @@ function careerInit(o){
   o.cr=o.cr||{on:false,subs:0,vids:0,base:0,strike:0,tot:0};
 }
 function jobNeedTxt(j){var a=[];if(j.need.stage)a.push('Lv.'+(j.need.stage+1)+' 이상');if(j.need.ins)a.push('통찰 '+j.need.ins+' 이상');return a.length?a.join(' · '):'조건 없음'}
+function jobLack(j){var a=[];if(j.need.stage&&(S.stage||0)<j.need.stage)a.push('Lv.'+(j.need.stage+1)+' 필요 (지금 Lv.'+((S.stage||0)+1)+')');if(j.need.ins&&S.insight<j.need.ins)a.push('통찰 '+j.need.ins+' 필요 (지금 '+Math.floor(S.insight)+')');return a.join(' · ')}
 function jobOk(j){return (!j.need.stage||(S.stage||0)>=j.need.stage)&&(!j.need.ins||S.insight>=j.need.ins)}
 function applyJob(id){
-  if(S.pending||S.broke)return;
+  if(S.pending||S.broke){busyMsg();return;}
   var j=jobOf(id);
   if(S.job===id){toast('이미 일하고 있어요');return;}
   if(id==='part'){S.job='part';S.jobLv=0;S.jobDays=0;S.jobWarn=0;toast('퇴사했어요. 알바로 돌아가요');save();render();renderCareer();return;}
-  if(!jobOk(j)){toast('조건이 안 돼요: '+jobNeedTxt(j));return;}
+  if(!jobOk(j)){toast('아직 지원할 수 없어요 · '+jobLack(j));return;}
   if(S.jobCd>S.day){toast('면접은 '+(S.jobCd-S.day)+'일 뒤에 또 볼 수 있어요');return;}
   S.jobCd=S.day+3;
   var p=Math.max(.15,Math.min(.9,.35+S.insight/200+(S.skill.fin+S.skill.biz+S.skill.re+S.skill.safe)*.012+(S.happy-50)/400));
@@ -2628,8 +2649,9 @@ function renderCareer(){
     var c=el('div','card');c.appendChild(el('b','',x.n+' · 일당 '+kr(x.w)));
     c.appendChild(el('div','sub',x.desc+(x.lay?' · 해고 위험 있음':'')));
     c.appendChild(el('div','sub','조건: '+jobNeedTxt(x)));
-    var bt=el('button','btn mini '+(x.id==='part'?'skip':'buy'),x.id==='part'?'퇴사하고 알바로':'지원하기');bt.type='button';
-    bt.disabled=x.id!=='part'&&!jobOk(x);
+    var ok=x.id==='part'||jobOk(x);
+    if(!ok)c.appendChild(el('div','sub neg jlack','🔒 '+jobLack(x)));
+    var bt=el('button','btn mini '+(x.id==='part'?'skip':'buy')+(ok?'':' off'),x.id==='part'?'퇴사하고 알바로':(ok?'지원하기':'🔒 조건 부족'));bt.type='button';
     bt.addEventListener('click',function(){applyJob(x.id)});c.appendChild(bt);b.appendChild(c);
   });
   b.appendChild(el('h2','','영상 채널'));
@@ -3339,8 +3361,8 @@ function openRankScr(){$('#menu').hidden=true;$('#hub').hidden=true;RX=null;rend
 
 /* ---- confirm dialog for money actions (amounts <= 1M skip unless PREF.cf) ---- */
 var CFM_FN=null;
-function confirmDo(title,detail,amt,fn){
-  if(amt<=1000000&&!(typeof PREF!=='undefined'&&PREF.cf)){fn();return;}
+function confirmDo(title,detail,amt,fn,always){
+  if(!always&&amt<=1000000&&!(typeof PREF!=='undefined'&&PREF.cf)){fn();return;}
   CFM_FN=fn;
   $('#cfmT').textContent=title;$('#cfmD').textContent=detail;
   $('#cfm').hidden=false;
@@ -3378,7 +3400,7 @@ function buildCreate(){
 /* ---------- items: looks (cash), cash-shop (gems), homes and cars ---------- */
 var ITEMS=[
   {id:'cap',slot:'head',name:'야구모자',cost:80000,wage:2,happy:0,up:0,art:function(R){R(3,4,10,5,'#d62b2b');R(2,8,12,1,'#d62b2b');R(8,9,7,1,'#a01f1f');R(7,3,2,1,'#ffffff');}},
-  {id:'santahat',slot:'head',name:'겨울 털모자',cost:120000,wage:0,happy:0,up:0,art:function(R){R(4,5,8,5,'#d62b2b');R(8,2,5,3,'#d62b2b');R(12,1,3,3,'#ffffff');R(3,10,10,2,'#ffffff');}},
+  {id:'santahat',slot:'head',name:'겨울 털모자',cost:120000,wage:0,happy:.3,up:0,art:function(R){R(4,5,8,5,'#d62b2b');R(8,2,5,3,'#d62b2b');R(12,1,3,3,'#ffffff');R(3,10,10,2,'#ffffff');}},
   {id:'snorkel',slot:'head',name:'수영 고글',cost:600000,wage:4,happy:0.5,up:1000,art:function(R){R(2,6,10,4,'#f2a61e');R(3,7,3,2,'#4aa3ff');R(8,7,3,2,'#4aa3ff');R(12,1,2,12,'#f2a61e');R(11,1,3,1,'#f2a61e');}},
   {id:'shades',slot:'head',name:'선글라스',cost:300000,wage:0,happy:0.5,up:500,art:function(R){R(2,6,12,3,'#12121c');R(3,6,2,1,'#6fa8ff');R(9,6,2,1,'#6fa8ff');R(7,7,2,1,'#12121c');}},
   {id:'santa',slot:'body',name:'겨울 패딩',cost:400000,wage:0,happy:1,up:1500,art:function(R){R(3,3,10,9,'#d62b2b');R(1,3,3,6,'#d62b2b');R(12,3,3,6,'#d62b2b');R(6,3,4,1,'#ffffff');R(3,11,10,1,'#ffffff');R(3,8,10,1,'#1b1b2f');R(7,8,2,1,'#f2c14e');R(1,9,3,1,'#ffffff');R(12,9,3,1,'#ffffff');}},
@@ -3401,12 +3423,12 @@ var NEWI=[
  ['beanie','head','비니',60000,1,0,0],['bucket','head','벙거지',90000,1,0,0],['beret','head','베레모',150000,0,.3,0],['helmet','head','안전모',180000,2,0,0],
  ['cowboy','head','카우보이 모자',250000,0,.3,0],['headband','head','스포츠 머리띠',50000,1,0,0],['ribbon','head','큰 리본',70000,0,.3,0],['bunny','head','토끼 머리띠',110000,0,.5,0],
  ['flower','head','꽃 화관',200000,0,.5,0],['grad','head','졸업 모자',400000,2,0,0],['chef','head','요리사 모자',130000,1,0,0],['wizard','head','마법사 모자',700000,0,1,500],['tophat','head','실크햇',900000,3,0,800],
- ['round','face','둥근 안경',120000,1,0,0],['monocle','face','외알 안경',500000,2,0,300],['heartglass','face','하트 안경',150000,0,.5,0],['facemask','face','마스크',20000,0,0,0],['eyepatch','face','안대',80000,0,.3,0],['bandaid','face','반창고',10000,0,0,0],
- ['hoodie','body','후드티',90000,0,0,0],['overalls','body','멜빵바지',140000,1,0,0],['apron','body','앞치마',120000,1,0,0],['labcoat','body','연구 가운',450000,3,0,500],['raincoat','body','노란 우비',110000,0,0,0],
+ ['round','face','둥근 안경',120000,1,0,0],['monocle','face','외알 안경',500000,2,0,300],['heartglass','face','하트 안경',150000,0,.5,0],['facemask','face','마스크',20000,1,0,0],['eyepatch','face','안대',80000,0,.3,0],['bandaid','face','반창고',10000,0,0.2,0],
+ ['hoodie','body','후드티',90000,0,0.4,0],['overalls','body','멜빵바지',140000,1,0,0],['apron','body','앞치마',120000,1,0,0],['labcoat','body','연구 가운',450000,3,0,500],['raincoat','body','노란 우비',110000,1,0,0],
  ['jersey','body','야구 유니폼',200000,0,.5,0],['hanbok','body','마칸다 전통복',800000,2,1,1000],['tracksuit','body','트레이닝복',160000,0,.3,0],['dress','body','파티 드레스',600000,0,1,800],['armor','body','기사 갑옷',2500000,5,1,2000],
  ['scarf','deco','목도리',70000,0,.3,0],['bowtie','deco','나비넥타이',100000,1,0,0],['headphones','deco','헤드폰',300000,0,1,0],['backpack','deco','책가방',130000,1,0,0],['pearl','deco','진주 목걸이',900000,2,0,600],['medal','deco','금메달',1200000,0,1,0],
- ['coin','charm','행운 동전',50000,0,.3,0],['piggy','charm','돼지 저금통',200000,0,.5,0],['book','charm','두꺼운 책',100000,1,0,0],['balloon','charm','풍선',40000,0,.3,0],['umbrella','charm','우산',90000,0,0,0],['briefcase','charm','서류가방',350000,3,0,0],['starbadge','charm','별 배지',60000,0,.3,0],
- ['sneaker','feet','운동화',120000,0,0,0],['boots','feet','부츠',220000,1,0,0],['rainboot','feet','노란 장화',90000,0,0,0],['loafer','feet','구두',400000,2,0,0],['slipper','feet','슬리퍼',30000,0,0,0]
+ ['coin','charm','행운 동전',50000,0,.3,0],['piggy','charm','돼지 저금통',200000,0,.5,0],['book','charm','두꺼운 책',100000,1,0,0],['balloon','charm','풍선',40000,0,.3,0],['umbrella','charm','우산',90000,1,0,0],['briefcase','charm','서류가방',350000,3,0,0],['starbadge','charm','별 배지',60000,0,.3,0],
+ ['sneaker','feet','운동화',120000,2,0,0],['boots','feet','부츠',220000,1,0,0],['rainboot','feet','노란 장화',90000,1,0,0],['loafer','feet','구두',400000,2,0,0],['slipper','feet','슬리퍼',30000,0,0.3,0]
 ];
 NEWI.forEach(function(a){ITEMS.push({id:a[0],slot:a[1],name:a[2],cost:a[3],wage:a[4],happy:a[5],up:a[6],art:function(R){R(4,4,8,8,'#9aa3bb')}});});
 HOUSES.forEach(function(h){ITEMS.push({id:'h'+h.lv,tab:'home',kind:'house',lv:h.lv,name:h.name,cost:h.cost,up:h.up,happy:h.happy,eff:'집값은 빌라 지수를 따라가요 · 팔 때 3% 수수료',
@@ -3488,7 +3510,7 @@ function pay(it){
   return true;
 }
 function shopAct(){
-  if(S.pending||S.broke)return;
+  if(S.pending||S.broke){busyMsg();return;}
   var it=itemById(SEL);if(!it)return;
   var amt=0,msg='';
   if(it.kind==='house'||it.kind==='car'){var cur=S[it.kind];if(cur&&cur.lv===it.lv){amt=it.kind==='house'?houseV():carV();msg=it.name+'을(를) 지금 시세로 팔까요? 약 '+kr(amt);}else{amt=it.cost;msg=it.name+'을(를) '+kr(it.cost)+'에 살까요?'+(it.kind==='house'?' 현금이 모자라면 주택담보대출이 함께 생겨요.':'');}}
@@ -3496,7 +3518,7 @@ function shopAct(){
   if(amt>0)confirmDo(it.name,msg,amt,function(){shopAct0(it)});else shopAct0(it);
 }
 function shopAct0(it){
-  if(S.pending||S.broke)return;
+  if(S.pending||S.broke){busyMsg();return;}
   if(!it)return;
   if(itemLock(it)){toast(itemLock(it));return;}
   if(it.kind==='book'){readBook(it);return;}
@@ -3643,13 +3665,13 @@ function renderAssetSheet(){
   [[1e6,'100만'],[5e6,'500만'],['all','최대']].forEach(function(x){
     var b=el('button','btn mini buy',x[1]);b.type='button';
     b.addEventListener('click',function(){
-      if(S.pending||S.broke)return;
+      if(S.pending||S.broke){busyMsg();return;}
       var amt=x[0]==='all'?S.cash:x[0];
       if(S.cash<=10000||amt<10000){toast('현금이 부족해요');return;}
       var lk=assetLock(a);if(lk){toast(lk);return;}
       var ba=Math.min(amt,S.cash);
       confirmDo(a.short+' 사기','현금 '+kr(ba)+'으로 '+a.name+'을(를) 살까요? (수수료가 들어요)',ba,function(){
-        if(S.pending||S.broke)return;
+        if(S.pending||S.broke){busyMsg();return;}
         if(!buyAsset(a.id,amt)){toast('현금이 부족해요');return;}
         S.hist[S.hist.length-1]=Math.round(net());save();render();renderAssetSheet();toast(a.short+' '+kr(ba)+' 샀어요');
       });
@@ -3667,10 +3689,10 @@ function renderAssetSheet(){
   [[.5,'절반'],[1,'전부']].forEach(function(x){
     var b=el('button','btn mini skip',x[1]);b.type='button';b.disabled=!h;
     b.addEventListener('click',function(){
-      if(S.pending||S.broke)return;
+      if(S.pending||S.broke){busyMsg();return;}
       var ev=(h?h.sh*S.px[a.id]:0)*x[0];
       confirmDo(a.short+' 팔기',(x[0]===1?'전부':'절반')+' 팔까요? 약 '+kr(ev)+'어치예요. 이익이 나면 세금이 붙어요.',ev,function(){
-        if(S.pending||S.broke)return;
+        if(S.pending||S.broke){busyMsg();return;}
         var o=sellAsset(a.id,x[0]);qinc('sell',1);S.hist[S.hist.length-1]=Math.round(net());save();render();renderAssetSheet();toast(a.short+' 팔아서 '+kr(o)+' 받았어요');
       });
     });sr.appendChild(b);});
@@ -3733,7 +3755,7 @@ function renderNews(){
     t.appendChild(el('div','who',NPC[n.who].name+' · '+n.day+'일째'));
     t.appendChild(el('h3','',n.title));t.appendChild(el('p','',n.body));
     if(n.effect)t.appendChild(el('span','chip',n.effect));
-    it.appendChild(t);box.appendChild(it);
+    it.appendChild(t);it.style.cursor='pointer';it.addEventListener('click',function(){openNewsDetail(n)});box.appendChild(it);
   });
   if(!S.news.length)box.appendChild(el('div','empty','아직 뉴스가 없어요'));
 }
@@ -3818,9 +3840,9 @@ function renderShop(){
   });
   tb.style.flexWrap='wrap';
   if(STAB==='look'){var cw=el('div','');cw.style.cssText='display:flex;flex-wrap:wrap;gap:4px;flex-basis:100%;margin-top:4px';[['','전체']].concat(SLOTS).forEach(function(t){
-    var b=el('button','btn mini'+(SLOTF===t[0]?' gold':''),t[1]);b.type='button';b.style.flex='0 0 auto';b.style.padding='2px 8px';
+    var b=el('button','btn mini'+(SLOTF===t[0]?' gold':''),t[1]);b.type='button';b.style.flex='0 0 auto';b.style.padding='2px 10px';b.style.minHeight='36px';b.style.minWidth='44px';
     b.addEventListener('click',function(){SLOTF=t[0];PG.shop=0;renderShop();});cw.appendChild(b);
-  });tb.appendChild(cw);}
+  });var mb=el('button','btn mini','🧍 내 착용');mb.type='button';mb.style.cssText='flex:0 0 auto;min-height:36px;padding:2px 10px';mb.addEventListener('click',openMe);cw.appendChild(mb);tb.appendChild(cw);}
   var list=ITEMS.filter(function(x){return x.tab===STAB&&(STAB!=='look'||!SLOTF||x.slot===SLOTF)});
   if(!list.length){SLOTF='';list=ITEMS.filter(function(x){return x.tab===STAB});}
   if(list.indexOf(itemById(SEL))<0){SEL=list[0].id;}
@@ -4092,8 +4114,8 @@ $('#scene').addEventListener('click',function(ev){
 $('#actWork').addEventListener('click',function(){S.action='work';save();render();});
 $('#actRest').addEventListener('click',function(){S.action='rest';save();render();});
 $('#actVid').addEventListener('click',function(){S.action='video';save();render();});
-document.querySelectorAll('[data-dep]').forEach(function(b){b.addEventListener('click',function(){var v=b.getAttribute('data-dep'),a=v==='all'?Math.max(0,S.cash):Math.min(+v,Math.max(0,S.cash));confirmDo('예금 넣기',kr(a)+'을 예금에 넣을까요?',a,function(){deposit(v)})})});
-document.querySelectorAll('[data-wd]').forEach(function(b){b.addEventListener('click',function(){var v=b.getAttribute('data-wd'),a=v==='all'?S.deposit:Math.min(+v,S.deposit);confirmDo('예금 찾기',kr(a)+'을 현금으로 찾을까요?',a,function(){withdraw(v)})})});
+document.querySelectorAll('[data-dep]').forEach(function(b){b.addEventListener('click',function(){if(S.pending||S.broke){busyMsg();return;}var v=b.getAttribute('data-dep'),a=v==='all'?Math.max(0,S.cash):Math.min(+v,Math.max(0,S.cash));confirmDo('예금 넣기',kr(a)+'을 예금에 넣을까요?',a,function(){deposit(v)},a>0)})});
+document.querySelectorAll('[data-wd]').forEach(function(b){b.addEventListener('click',function(){if(S.pending||S.broke){busyMsg();return;}var v=b.getAttribute('data-wd'),a=v==='all'?S.deposit:Math.min(+v,S.deposit);confirmDo('예금 찾기',kr(a)+'을 현금으로 찾을까요?',a,function(){withdraw(v)},a>0)})});
 $('#menuBtn').addEventListener('click',function(){renderMenu();$('#menu').hidden=false});
 $('#rOk').addEventListener('click',function(){$('#result').hidden=true;render();});
 $('#hubClose').addEventListener('click',function(){$('#hub').hidden=true;hubReveal=null;});
@@ -4141,6 +4163,52 @@ window.addEventListener('storage',function(e){if(e.key===KEY&&e.newValue&&S){var
 if(S){$('#create').hidden=true;switchTab('home');liveSync();comeback();render();}
 else{buildNav();buildCreate();$('#create').hidden=false;if(TAMPERED)setTimeout(function(){toast('저장 데이터가 올바르지 않아 새로 시작해요');},300);}
 netInit();
+
+
+/* ---- news detail: tap a card to read the whole text ---- */
+function openNewsDetail(n){
+  var b=$('#nviewBody');b.innerHTML='';
+  var h=el('div','nvh'),f=el('div','face');f.appendChild(spriteEl(NPC[n.who].sprite,56));h.appendChild(f);
+  var t=el('div','txt');t.appendChild(el('div','who',NPC[n.who].name+' · '+n.day+'일째'));t.appendChild(el('h3','',n.title));h.appendChild(t);b.appendChild(h);
+  b.appendChild(el('p','nvp',n.body));if(n.effect)b.appendChild(el('span','chip',n.effect));
+  $('#nview').hidden=false;
+}
+$('#nviewClose').addEventListener('click',function(){$('#nview').hidden=true});
+
+/* ---- my character: worn-shot, per-slot items, total effects ---- */
+function renderMe(){
+  var cv=$('#meCv'),g=cv.getContext('2d');g.imageSmoothingEnabled=false;g.setTransform(1,0,0,1,0,0);
+  var P=PAL[phase()],n=P.sky.length;
+  P.sky.forEach(function(col,i){g.fillStyle=col;g.fillRect(0,Math.floor(i*160/n),216,Math.ceil(160/n)+1)});
+  g.fillStyle=P.grass;g.fillRect(0,160,216,56);g.fillStyle=P.path;g.fillRect(38,160,140,56);
+  g.fillStyle='rgba(0,0,0,.3)';g.fillRect(70,176,76,8);
+  var hoo=heroOpts(tierOf(net()),S.eq),hs;try{hs=makeSpriteHi(hoo);}catch(e){hs=makeSprite(hoo);}
+  g.drawImage(hs,28,14,160,160);
+  var b=$('#meBody');b.innerHTML='';
+  var worn0=0;
+  WEAR.forEach(function(k){
+    var sn='';SLOTS.forEach(function(s){if(s[0]===k)sn=s[1]});
+    var id=S.eq[k],it=id?itemById(id):null,row=el('div','merow'+(it?'':' empty'));
+    row.appendChild(el('span','mslot',sn));
+    var tx=el('div','mtx');
+    if(it){worn0++;tx.appendChild(el('b','',it.name));tx.appendChild(el('div','sub',effLines(it).map(function(e){return e[1]}).join(' · ')));}
+    else tx.appendChild(el('b','',"비어 있음"));
+    row.appendChild(tx);b.appendChild(row);
+  });
+  var s=eqStats(S.eq),tot=el('div','metot');tot.appendChild(el('b','','착용 효과 합계'));
+  var ln=[];
+  if(s.wage)ln.push(['pos','일당 +'+s.wage+'%']);
+  if(s.happy)ln.push(['pos','행복 +'+(Math.round(s.happy*10)/10)+'/일']);
+  if(s.up)ln.push(['neg','유지비 -'+fmt(s.up)+'원/일']);
+  WEAR.forEach(function(k){var it=S.eq[k]?itemById(S.eq[k]):null;if(it&&it.eff)ln.push(['pos',it.name+': '+it.eff]);});
+  if(!ln.length)ln.push(['','착용 효과가 아직 없어요']);
+  ln.forEach(function(e){tot.appendChild(el('div','sub '+e[0],e[1]))});
+  b.appendChild(tot);
+}
+function openMe(){$('#menu').hidden=true;renderMe();$('#me').hidden=false;}
+$('#meBtn').addEventListener('click',openMe);
+$('#meClose').addEventListener('click',function(){$('#me').hidden=true});
+$('#meShop').addEventListener('click',function(){$('#me').hidden=true;STAB='look';SLOTF='';switchTab('shop');});
 
 /* ---------- 따라하기 튜토리얼: 눌러야 할 버튼을 깜빡여 알려주고, 누르면 다음 단계로 ---------- */
 var COACH=[
@@ -4254,7 +4322,7 @@ window.__i18nMissing=function(){return Object.keys(EN_MISS).sort(function(a,b){r
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',i18nStart);else setTimeout(i18nStart,0);
 
 /* ===== shell: splash, login screen, help / manual ===== */
-var GAME_NAME='내일의 부자들',APP_VER='v38';
+var GAME_NAME='내일의 부자들',APP_VER='v39';
 function drawSplash(){
   var c=$('#splCv');if(!c||!c.getContext)return;var vc=c,c=document.createElement('canvas');c.width=96;c.height=112;var g=c.getContext('2d');g.imageSmoothingEnabled=false;
   var sky=['#0a0f33','#0f1748','#162058','#1d2a6a','#27367a','#324488','#3d5296'];
